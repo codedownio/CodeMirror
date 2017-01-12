@@ -108,7 +108,7 @@ function updateLineGutter(cm, lineView, lineN, dims) {
       gutterWrap.className += " " + lineView.line.gutterClass
     if (cm.options.lineNumbers && (!markers || !markers["CodeMirror-linenumbers"]))
       lineView.lineNumber = gutterWrap.appendChild(
-        elt("div", lineNumberFor(cm.options, lineN),
+        elt("div", [elt("span", lineNumberFor(cm.options, lineN), "CodeMirror-linenumber-span")],
             "CodeMirror-linenumber CodeMirror-gutter-elt",
             `left: ${dims.gutterLeft["CodeMirror-linenumbers"]}px; width: ${cm.display.lineNumInnerWidth}px`))
     if (markers) for (let k = 0; k < cm.options.gutters.length; ++k) {

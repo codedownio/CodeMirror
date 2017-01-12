@@ -30,12 +30,12 @@
         return;
       }
       if (emptyListRE.test(line)) {
-        cm.replaceRange("", {
+        cm.replaceRange("\n", {
           line: pos.line, ch: 0
         }, {
           line: pos.line, ch: pos.ch + 1
         });
-        replacements[i] = "\n";
+        replacements[i] = "";
       } else {
         var indent = match[1], after = match[5];
         var bullet = unorderedListRE.test(match[2]) || match[2].indexOf(">") >= 0

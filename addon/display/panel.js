@@ -60,7 +60,7 @@
     if (this.options.stable && isAtTop(this.cm, this.node))
       this.cm.scrollTo(null, this.cm.getScrollInfo().top - this.height)
     info.wrapper.removeChild(this.node);
-    if (--info.panels == 0) removePanels(this.cm);
+    // if (--info.panels == 0) removePanels(this.cm);
   };
 
   Panel.prototype.changed = function(height) {

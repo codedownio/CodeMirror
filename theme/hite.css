@@ -1,0 +1,37 @@
+
+/* HITE THEME */
+
+/* Taken from the default theme in codemirror.css and slightly modified */
+
+/* .cm-s-hite .cm-header {color: blue;} */
+/* .cm-s-hite .cm-quote {color: #090;} */
+/* .cm-header, .cm-strong {font-weight: bold;} */
+/* .cm-em {font-style: italic;} */
+/* .cm-s-hite .cm-variable-2 {color: #05a;} */
+/* .cm-s-hite .cm-comment {color: #a50;} */
+
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-link {text-decoration: underline;}
+.cm-strikethrough {text-decoration: line-through;}
+
+.cm-s-hite .cm-keyword {color: #708;}
+.cm-s-hite .cm-atom {color: #219;}
+.cm-s-hite .cm-number {color: #164;}
+.cm-s-hite .cm-def {color: #00f;}
+.cm-s-hite .cm-variable,
+.cm-s-hite .cm-punctuation,
+.cm-s-hite .cm-property,
+.cm-s-hite .cm-operator {}
+.cm-s-hite .cm-variable-3 {color: #085;}
+.cm-s-hite .cm-string {color: #a11;}
+.cm-s-hite .cm-string-2 {color: #f50;}
+.cm-s-hite .cm-meta {color: #555;}
+.cm-s-hite .cm-qualifier {color: #555;}
+.cm-s-hite .cm-builtin {color: #30a;}
+.cm-s-hite .cm-bracket {color: #997;}
+.cm-s-hite .cm-tag {color: #170;}
+.cm-s-hite .cm-attribute {color: #00c;}
+.cm-s-hite .cm-hr {color: #999;}
+.cm-s-hite .cm-link {color: #00c;}
+.cm-s-hite .cm-error {color: #f00;}
