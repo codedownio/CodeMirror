@@ -160,11 +160,11 @@ function endOperation_finish(op) {
     if (op.scrollToPos.isCursor && cm.state.focused) maybeScrollWindow(cm, coords)
   }
 
-  // Fire events for markers that are hidden/unidden by editing or
+  // Fire events for markers that are hidden/unhidden by editing or
   // undoing
   let hidden = op.maybeHiddenMarkers, unhidden = op.maybeUnhiddenMarkers
   if (hidden) for (let i = 0; i < hidden.length; ++i)
-    if (!hidden[i].lines.length) signal(hidden[i], "hide")
+    if (!hidden[i].marker.lines.length) signal(hidden[i].marker, "hide", hidden[i].change)
   if (unhidden) for (let i = 0; i < unhidden.length; ++i)
     if (unhidden[i].lines.length) signal(unhidden[i], "unhide")
 

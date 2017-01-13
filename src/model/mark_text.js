@@ -137,11 +137,14 @@ TextMarker.prototype.attachLine = function(line) {
   }
   this.lines.push(line)
 }
-TextMarker.prototype.detachLine = function(line) {
+TextMarker.prototype.detachLine = function(line, change) {
   this.lines.splice(indexOf(this.lines, line), 1)
   if (!this.lines.length && this.doc.cm) {
     let op = this.doc.cm.curOp
-    ;(op.maybeHiddenMarkers || (op.maybeHiddenMarkers = [])).push(this)
+    ;(op.maybeHiddenMarkers || (op.maybeHiddenMarkers = [])).push({
+      marker: this,
+      change: change
+    })
   }
 }
 

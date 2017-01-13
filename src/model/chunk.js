@@ -29,11 +29,11 @@ export function LeafChunk(lines) {
 LeafChunk.prototype = {
   chunkSize: function() { return this.lines.length },
   // Remove the n lines at offset 'at'.
-  removeInner: function(at, n) {
+  removeInner: function(at, n, change) {
     for (let i = at, e = at + n; i < e; ++i) {
       let line = this.lines[i]
       this.height -= line.height
-      cleanUpLine(line)
+      cleanUpLine(line, change)
       signalLater(line, "delete")
     }
     this.lines.splice(at, n)
@@ -71,13 +71,13 @@ export function BranchChunk(children) {
 
 BranchChunk.prototype = {
   chunkSize: function() { return this.size },
-  removeInner: function(at, n) {
+  removeInner: function(at, n, change) {
     this.size -= n
     for (let i = 0; i < this.children.length; ++i) {
       let child = this.children[i], sz = child.chunkSize()
       if (at < sz) {
         let rm = Math.min(n, sz - at), oldHeight = child.height
-        child.removeInner(at, rm)
+        child.removeInner(at, rm, change)
         this.height -= oldHeight - child.height
         if (sz == rm) { this.children.splice(i--, 1); child.parent = null }
         if ((n -= rm) == 0) break
