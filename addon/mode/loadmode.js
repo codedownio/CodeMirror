@@ -48,8 +48,7 @@
       });
       others.parentNode.insertBefore(script, others);
     } else if (env == "cjs") {
-      // Commented out because this makes webpack unhappy
-      // require(file);
+      require(file);
       cont();
     } else if (env == "amd") {
       requirejs([file], cont);
