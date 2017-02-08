@@ -10,7 +10,7 @@ import { onKeyDown, onKeyPress, onKeyUp } from "./key_events"
 import { getKeyMap } from "../input/keymap"
 import { methodOp, operation, runInOp } from "../display/operations"
 import { clipLine, clipPos, cmp, Pos } from "../line/pos"
-import { charCoords, charWidth, clearCaches, clearLineMeasurementCache, coordsChar, cursorCoords, displayHeight, displayWidth, estimateLineHeights, fromCoordSystem, intoCoordSystem, scrollGap, textHeight } from "../measurement/position_measurement"
+import { charCoords, charWidth, clearCaches, clearLineMeasurementCache, coordsChar, cursorCoords, displayHeight, displayWidth, estimateLineHeight, estimateLineHeights, fromCoordSystem, intoCoordSystem, scrollGap, textHeight } from "../measurement/position_measurement"
 import { Range } from "../model/selection"
 import { replaceOneSelection, skipAtomic } from "../model/selection_updates"
 import { addToScrollPos, calculateScrollPos, ensureCursorVisible, resolveScrollToPos, scrollIntoView } from "../display/scrolling"
@@ -423,6 +423,12 @@ export default function(CodeMirror) {
       if (oldHeight == null || Math.abs(oldHeight - textHeight(this.display)) > .5)
         estimateLineHeights(this)
       signal(this, "refresh", this)
+    }),
+
+    refreshLineHeight: methodOp(function(lineNumber) {
+      // TODO: is it possible to clear the caches less invasively, like only for the line in question?
+      clearCaches(this)
+      estimateLineHeight(this, lineNumber)
     }),
 
     swapDoc: methodOp(function(doc) {
