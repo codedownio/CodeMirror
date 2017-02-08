@@ -20,9 +20,9 @@ export function onFocus(cm, e) {
 
   if (cm.options.readOnly == "nocursor") return
   if (!cm.state.focused) {
-    signal(cm, "focus", cm, e)
     cm.state.focused = true
     addClass(cm.display.wrapper, "CodeMirror-focused")
+    signal(cm, "focus", cm, e)
     // This test prevents this from firing when a context
     // menu is closed (since the input reset would kill the
     // select-all detection hack)
@@ -38,9 +38,9 @@ export function onBlur(cm, e) {
   if (cm.state.delayingBlurEvent) return
 
   if (cm.state.focused) {
-    signal(cm, "blur", cm, e)
     cm.state.focused = false
     rmClass(cm.display.wrapper, "CodeMirror-focused")
+    signal(cm, "blur", cm, e)
   }
   clearInterval(cm.display.blinker)
   setTimeout(() => { if (!cm.state.focused) cm.display.shift = false }, 150)
