@@ -78,16 +78,22 @@ function endOperation_R1(op) {
     op.scrollToPos && (op.scrollToPos.from.line < display.viewFrom ||
                        op.scrollToPos.to.line >= display.viewTo) ||
     display.maxLineChanged && cm.options.lineWrapping
+
+  console.log("op.forceUpdate = " + op.forceUpdate + "(op.viewChanged = " + op.viewChanged + ", op.mustUpdate = " + op.mustUpdate + ")");
+
   op.update = op.mustUpdate &&
     new DisplayUpdate(cm, op.mustUpdate && {top: op.scrollTop, ensure: op.scrollToPos}, op.forceUpdate)
 }
 
 function endOperation_W1(op) {
   op.updatedDisplay = op.mustUpdate && updateDisplayIfNeeded(op.cm, op.update)
+  console.log("op.updatedDisplay = " + op.updatedDisplay + "(op.mustUpdate = " + op.mustUpdate + ")");
+
 }
 
 function endOperation_R2(op) {
   let cm = op.cm, display = cm.display
+  console.log('endOperation_R2, op.updatedDisplay = ', op.updatedDisplay);
   if (op.updatedDisplay) updateHeightsInViewport(cm)
 
   op.barMeasure = measureForScrollbars(cm)

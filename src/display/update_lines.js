@@ -8,6 +8,10 @@ import { ie, ie_version } from "../util/browser"
 export function updateHeightsInViewport(cm) {
   let display = cm.display
   let prevBottom = display.lineDiv.offsetTop
+
+  console.log('updateHeightsInViewport looping over view lines: ', display.view.length);
+  console.trace('updateHeightsInViewport');
+
   for (let i = 0; i < display.view.length; i++) {
     let cur = display.view[i], height
     if (cur.hidden) continue

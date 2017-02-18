@@ -65,6 +65,8 @@ export function updateDisplayIfNeeded(cm, update) {
     return false
   }
 
+  console.log("updateDisplayIfNeeded, update.force = " + update.force);
+
   // Bail out if the visible area is already rendered and nothing changed.
   if (!update.force &&
       update.visible.from >= display.viewFrom && update.visible.to <= display.viewTo &&
