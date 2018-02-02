@@ -155,6 +155,17 @@ function endOperation_finish(op) {
   if (display.wrapper.offsetHeight)
     doc.scrollTop = cm.display.scroller.scrollTop
 
+  // Fire final actions after hiding markers
+  if (op.finalActions) {
+    for (var i = 0; i < op.finalActions.length; i++) {
+      op.finalActions[i]();
+    }
+  }
+
+  // Refresh the CodeMirror at the end
+  if (cm.refreshAtEndOfOperation) setTimeout(function() { cm.refresh(); });
+  cm.refreshAtEndOfOperation = false;
+
   // Fire change events, and delayed event handlers
   if (op.changeObjs)
     signal(cm, "changes", cm, op.changeObjs)
