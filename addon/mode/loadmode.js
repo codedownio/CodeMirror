@@ -32,27 +32,34 @@
 
   CodeMirror.requireMode = function(mode, cont) {
     if (typeof mode != "string") mode = mode.name;
-    if (CodeMirror.modes.hasOwnProperty(mode)) return ensureDeps(mode, cont);
+    if (CodeMirror.modes.hasOwnProperty(mode)) {
+      if (!CodeMirror.modes[mode].isDummyMode) return ensureDeps(mode, cont);
+    }
     if (loading.hasOwnProperty(mode)) return loading[mode].push(cont);
 
     var file = CodeMirror.modeURL.replace(/%N/g, mode);
-    if (env == "plain") {
-      var script = document.createElement("script");
-      script.src = file;
-      var others = document.getElementsByTagName("script")[0];
-      var list = loading[mode] = [cont];
-      CodeMirror.on(script, "load", function() {
+
+    // Just use the "plain" behavior always
+    // TODO: find a reasonable way to bundle all the modes with webpack
+    var script = document.createElement("script");
+    script.src = file;
+    var others = document.getElementsByTagName("script")[0];
+    var list = loading[mode] = [cont];
+    CodeMirror.on(script, "load", function() {
         ensureDeps(mode, function() {
-          for (var i = 0; i < list.length; ++i) list[i]();
+            for (var i = 0; i < list.length; ++i) list[i]();
         });
-      });
-      others.parentNode.insertBefore(script, others);
-    } else if (env == "cjs") {
-      require(file);
-      cont();
-    } else if (env == "amd") {
-      requirejs([file], cont);
-    }
+    });
+    others.parentNode.insertBefore(script, others);
+
+    // if (env == "plain") {
+      // Plain code came from here
+    // } else if (env == "cjs") {
+    //   require(file);
+    //   cont();
+    // } else if (env == "amd") {
+    //   requirejs([file], cont);
+    // }
   };
 
   CodeMirror.autoLoadMode = function(instance, mode) {
