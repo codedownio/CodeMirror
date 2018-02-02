@@ -41,11 +41,7 @@
         return;
       }
       if (emptyListRE.test(line)) {
-        if (!/>\s*$/.test(line)) cm.replaceRange("", {
-          line: pos.line, ch: 0
-        }, {
-          line: pos.line, ch: pos.ch + 1
-        });
+        cm.replaceRange("", { line: pos.line, ch: 0 }, { line: pos.line, ch: pos.ch + 1 });
         replacements[i] = "\n";
       } else {
         var indent = match[1], after = match[5];
