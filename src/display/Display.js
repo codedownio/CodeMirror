@@ -33,18 +33,20 @@ export function Display(place, doc, input, options) {
   let lines = eltP("div", [d.lineSpace], "CodeMirror-lines")
   // Moved around its parent to cover visible view.
   d.mover = elt("div", [lines], null, "position: relative")
+  // Will contain the gutters, if any.
+  d.gutters = elt("div", null, "CodeMirror-gutters")
   // Set to the height of the document, allowing scrolling.
-  d.sizer = elt("div", [d.mover], "CodeMirror-sizer")
+  d.sizer = elt("div", [d.mover, d.gutters], "CodeMirror-sizer")
   d.sizerWidth = null
   // Behavior of elts with overflow: auto and padding is
   // inconsistent across browsers. This is used to ensure the
   // scrollable area is big enough.
   d.heightForcer = elt("div", null, null, "position: absolute; height: " + scrollerGap + "px; width: 1px;")
-  // Will contain the gutters, if any.
-  d.gutters = elt("div", null, "CodeMirror-gutters")
   d.lineGutter = null
+  // An extra layer added to help center the content
+  d.sizeHelper = elt("div", [d.sizer, d.heightForcer], "CodeMirror-size-helper sizer")
   // Actual scrollable element.
-  d.scroller = elt("div", [d.sizer, d.heightForcer, d.gutters], "CodeMirror-scroll")
+  d.scroller = elt("div", [d.sizeHelper], "CodeMirror-scroll")
   d.scroller.setAttribute("tabIndex", "-1")
   // The element in which the editor lives.
   d.wrapper = elt("div", [d.scrollbarFiller, d.gutterFiller, d.scroller], "CodeMirror")

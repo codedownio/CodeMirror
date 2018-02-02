@@ -22,8 +22,10 @@ export function alignHorizontally(cm) {
     if (align) for (let j = 0; j < align.length; j++)
       align[j].style.left = left
   }
-  if (cm.options.fixedGutter)
-    display.gutters.style.left = (comp + gutterW) + "px"
+
+  if (cm.options.fixedGutter) {
+    display.gutters.style.left = "-" + cm.display.gutters.offsetWidth + "px";
+  }
 }
 
 // Used to ensure that the line number gutter is still the right

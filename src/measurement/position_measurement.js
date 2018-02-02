@@ -622,7 +622,9 @@ export function getDimensions(cm) {
     left[id] = n.offsetLeft + n.clientLeft + gutterLeft
     width[id] = n.clientWidth
   }
-  return {fixedPos: compensateForHScroll(d),
+  // Hack: I don't care about H scrolling, so I changed fixedPos to
+  // facilitate the centering trick with .CodeMirror-size-helper
+  return {fixedPos: -parseInt(d.sizer.style.marginLeft),
           gutterTotalWidth: d.gutters.offsetWidth,
           gutterLeft: left,
           gutterWidth: width,

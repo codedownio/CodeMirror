@@ -53,7 +53,7 @@ function drawSelectionRange(cm, range, output) {
   let display = cm.display, doc = cm.doc
   let fragment = document.createDocumentFragment()
   let padding = paddingH(cm.display), leftSide = padding.left
-  let rightSide = Math.max(display.sizerWidth, displayWidth(cm) - display.sizer.offsetLeft) - padding.right
+  let rightSide = Math.max(display.sizerWidth, displayWidth(cm) - (display.sizeHelper.offsetLeft + display.sizer.offsetLeft)) - padding.right
   let docLTR = doc.direction == "ltr"
 
   function add(left, top, width, bottom) {
