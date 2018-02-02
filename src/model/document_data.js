@@ -23,7 +23,7 @@ export function isWholeLineUpdate(doc, change) {
 export function updateDoc(doc, change, markedSpans, estimateHeight) {
   function spansFor(n) {return markedSpans ? markedSpans[n] : null}
   function update(line, text, spans) {
-    updateLine(line, text, spans, estimateHeight)
+    updateLine(line, text, spans, estimateHeight, change)
     signalLater(line, "change", line, change)
   }
   function linesFor(start, end) {
@@ -40,13 +40,13 @@ export function updateDoc(doc, change, markedSpans, estimateHeight) {
   // Adjust the line structure
   if (change.full) {
     doc.insert(0, linesFor(0, text.length))
-    doc.remove(text.length, doc.size - text.length)
+    doc.remove(text.length, doc.size - text.length, change)
   } else if (isWholeLineUpdate(doc, change)) {
     // This is a whole-line replace. Treated specially to make
     // sure line objects move the way they are supposed to.
     let added = linesFor(0, text.length - 1)
     update(lastLine, lastLine.text, lastSpans)
-    if (nlines) doc.remove(from.line, nlines)
+    if (nlines) doc.remove(from.line, nlines, change)
     if (added.length) doc.insert(from.line, added)
   } else if (firstLine == lastLine) {
     if (text.length == 1) {
@@ -59,12 +59,12 @@ export function updateDoc(doc, change, markedSpans, estimateHeight) {
     }
   } else if (text.length == 1) {
     update(firstLine, firstLine.text.slice(0, from.ch) + text[0] + lastLine.text.slice(to.ch), spansFor(0))
-    doc.remove(from.line + 1, nlines)
+    doc.remove(from.line + 1, nlines, change)
   } else {
     update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0))
     update(lastLine, lastText + lastLine.text.slice(to.ch), lastSpans)
     let added = linesFor(1, text.length - 1)
-    if (nlines > 1) doc.remove(from.line + 1, nlines - 1)
+    if (nlines > 1) doc.remove(from.line + 1, nlines - 1, change)
     doc.insert(from.line + 1, added)
   }
 

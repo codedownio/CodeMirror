@@ -27,21 +27,21 @@ eventMixin(Line)
 // Change the content (text, markers) of a line. Automatically
 // invalidates cached information and tries to re-estimate the
 // line's height.
-export function updateLine(line, text, markedSpans, estimateHeight) {
+export function updateLine(line, text, markedSpans, estimateHeight, change) {
   line.text = text
   if (line.stateAfter) line.stateAfter = null
   if (line.styles) line.styles = null
   if (line.order != null) line.order = null
-  detachMarkedSpans(line)
+  detachMarkedSpans(line, change)
   attachMarkedSpans(line, markedSpans)
   let estHeight = estimateHeight ? estimateHeight(line) : 1
   if (estHeight != line.height) updateLineHeight(line, estHeight)
 }
 
 // Detach a line from the document tree and its markers.
-export function cleanUpLine(line) {
+export function cleanUpLine(line, change) {
   line.parent = null
-  detachMarkedSpans(line)
+  detachMarkedSpans(line, change)
 }
 
 // Convert a style as returned by a mode (either null, or a string

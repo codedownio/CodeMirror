@@ -61,7 +61,7 @@ Doc.prototype = createObj(BranchChunk.prototype, {
     for (let i = 0; i < lines.length; ++i) height += lines[i].height
     this.insertInner(at - this.first, lines, height)
   },
-  remove: function(at, n) { this.removeInner(at - this.first, n) },
+  remove: function(at, n, change) { this.removeInner(at - this.first, n, change) },
 
   // From here, the methods are part of the public interface. Most
   // are also available from CodeMirror (editor) instances.
