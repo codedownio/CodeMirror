@@ -170,11 +170,11 @@ export function removeReadOnlyRanges(doc, from, to) {
 }
 
 // Connect or disconnect spans from a line.
-export function detachMarkedSpans(line) {
+export function detachMarkedSpans(line, change) {
   let spans = line.markedSpans
   if (!spans) return
   for (let i = 0; i < spans.length; ++i)
-    spans[i].marker.detachLine(line)
+    spans[i].marker.detachLine(line, change)
   line.markedSpans = null
 }
 export function attachMarkedSpans(line, spans) {
