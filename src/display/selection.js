@@ -31,7 +31,7 @@ export function prepareSelection(cm, primary) {
 export function drawSelectionCursor(cm, head, output) {
   let pos = cursorCoords(cm, head, "div", null, null, !cm.options.singleCursorHeightPerLine)
 
-  let cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"))
+  let cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor cursor"))
   cursor.style.left = pos.left + "px"
   cursor.style.top = pos.top + "px"
   cursor.style.height = Math.max(0, pos.bottom - pos.top) * cm.options.cursorHeight + "px"
@@ -57,7 +57,7 @@ function drawSelectionRange(cm, range, output) {
     if (top < 0) top = 0
     top = Math.round(top)
     bottom = Math.round(bottom)
-    fragment.appendChild(elt("div", null, "CodeMirror-selected", `position: absolute; left: ${left}px;
+    fragment.appendChild(elt("div", null, "CodeMirror-selected selected-text", `position: absolute; left: ${left}px;
                              top: ${top}px; width: ${width == null ? rightSide - left : width}px;
                              height: ${bottom - top}px`))
   }
