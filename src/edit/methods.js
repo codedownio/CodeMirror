@@ -10,7 +10,7 @@ import { onKeyDown, onKeyPress, onKeyUp } from "./key_events.js"
 import { onMouseDown } from "./mouse_events.js"
 import { getKeyMap } from "../input/keymap.js"
 import { endOfLine, moveLogically, moveVisually } from "../input/movement.js"
-import { endOperation, methodOp, operation, runInOp, startOperation } from "../display/operations.js"
+import { fireHiddenHandlers, endOperation, methodOp, operation, runInOp, startOperation } from "../display/operations.js"
 import { clipLine, clipPos, equalCursorPos, Pos } from "../line/pos.js"
 import { charCoords, charWidth, clearCaches, clearLineMeasurementCache, coordsChar, cursorCoords, displayHeight, displayWidth, estimateLineHeight, estimateLineHeights, fromCoordSystem, intoCoordSystem, scrollGap, textHeight } from "../measurement/position_measurement.js"
 import { Range } from "../model/selection.js"
@@ -407,6 +407,10 @@ export default function(CodeMirror) {
     operation: function(f){return runInOp(this, f)},
     startOperation: function(){return startOperation(this)},
     endOperation: function(){return endOperation(this)},
+
+    fireHiddenHandlers: methodOp(function() {
+      fireHiddenHandlers(this.curOp);
+    }),
 
     refresh: methodOp(function() {
       let oldHeight = this.display.cachedTextHeight
