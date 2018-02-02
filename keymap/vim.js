@@ -263,7 +263,7 @@
 
     function detachVimMap(cm, next) {
       if (this == CodeMirror.keyMap.vim) {
-        CodeMirror.rmClass(cm.getWrapperElement(), "cm-fat-cursor");
+        CodeMirror.rmClass(cm.getWrapperElement(), "fat-cursor");
         if (cm.getOption("inputStyle") == "contenteditable" && document.body.style.caretColor != null) {
           disableFatCursorMark(cm);
           cm.getInputField().style.caretColor = "";
@@ -275,7 +275,7 @@
     }
     function attachVimMap(cm, prev) {
       if (this == CodeMirror.keyMap.vim) {
-        CodeMirror.addClass(cm.getWrapperElement(), "cm-fat-cursor");
+        CodeMirror.addClass(cm.getWrapperElement(), "fat-cursor");
         if (cm.getOption("inputStyle") == "contenteditable" && document.body.style.caretColor != null) {
           enableFatCursorMark(cm);
           cm.getInputField().style.caretColor = "transparent";
@@ -5330,7 +5330,7 @@
       if (vim.fakeCursor) {
         vim.fakeCursor.clear();
       }
-      vim.fakeCursor = cm.markText(from, to, {className: 'cm-animate-fat-cursor'});
+      vim.fakeCursor = cm.markText(from, to, {className: 'cm-animate-fat-cursor animate-fat-cursor'});
     }
     function handleExternalSelection(cm, vim) {
       var anchor = cm.getCursor('anchor');
