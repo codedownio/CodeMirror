@@ -1,5 +1,5 @@
 import { elt } from "../util/dom"
-import { eventMixin, hasHandler, on } from "../util/event"
+import { eventMixin, hasHandler, on, signal } from "../util/event"
 import { endOperation, operation, runInOp, startOperation } from "../display/operations"
 import { clipPos, cmp, Pos } from "../line/pos"
 import { lineNo, updateLineHeight } from "../line/utils_line"
@@ -41,14 +41,18 @@ export function TextMarker(doc, type) {
 eventMixin(TextMarker)
 
 // Clear the marker.
-TextMarker.prototype.clear = function() {
+TextMarker.prototype.clear = function(signalImmediately) {
   if (this.explicitlyCleared) return
   let cm = this.doc.cm, withOp = cm && !cm.curOp
   if (withOp) startOperation(cm)
+
+  let found
+
   if (hasHandler(this, "clear")) {
-    let found = this.find()
-    if (found) signalLater(this, "clear", found.from, found.to)
+    found = this.find()
+    if (found && !signalImmediately) signalLater(this, "clear", found.from, found.to)
   }
+
   let min = null, max = null
   for (let i = 0; i < this.lines.length; ++i) {
     let line = this.lines[i]
@@ -78,6 +82,12 @@ TextMarker.prototype.clear = function() {
     this.doc.cantEdit = false
     if (cm) reCheckSelection(cm.doc)
   }
+
+  // If the signalImmediately flag is true, signal now
+  if (signalImmediately && hasHandler(this, "clear") && found) {
+    signal(this, "clear", found.from, found.to);
+  };
+
   if (cm) signalLater(cm, "markerCleared", cm, this)
   if (withOp) endOperation(cm)
   if (this.parent) this.parent.clear()
