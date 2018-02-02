@@ -8,7 +8,7 @@ import { indentLine } from "../input/indent"
 import { triggerElectric } from "../input/input"
 import { onKeyDown, onKeyPress, onKeyUp } from "./key_events"
 import { getKeyMap } from "../input/keymap"
-import { methodOp, operation, runInOp } from "../display/operations"
+import { fireHiddenHandlers, methodOp, operation, runInOp } from "../display/operations"
 import { clipLine, clipPos, cmp, Pos } from "../line/pos"
 import { charCoords, charWidth, clearCaches, clearLineMeasurementCache, coordsChar, cursorCoords, displayHeight, displayWidth, estimateLineHeight, estimateLineHeights, fromCoordSystem, intoCoordSystem, scrollGap, textHeight } from "../measurement/position_measurement"
 import { Range } from "../model/selection"
@@ -412,6 +412,10 @@ export default function(CodeMirror) {
     }),
 
     operation: function(f){return runInOp(this, f)},
+
+    fireHiddenHandlers: methodOp(function() {
+      fireHiddenHandlers(this.curOp);
+    }),
 
     refresh: methodOp(function() {
       let oldHeight = this.display.cachedTextHeight

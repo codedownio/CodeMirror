@@ -160,13 +160,7 @@ function endOperation_finish(op) {
     if (op.scrollToPos.isCursor && cm.state.focused) maybeScrollWindow(cm, coords)
   }
 
-  // Fire events for markers that are hidden/unidden by editing or
-  // undoing
-  let hidden = op.maybeHiddenMarkers, unhidden = op.maybeUnhiddenMarkers
-  if (hidden) for (let i = 0; i < hidden.length; ++i)
-    if (!hidden[i].lines.length) signal(hidden[i], "hide")
-  if (unhidden) for (let i = 0; i < unhidden.length; ++i)
-    if (unhidden[i].lines.length) signal(unhidden[i], "unhide")
+  fireHiddenHandlers(op)
 
   if (display.wrapper.offsetHeight)
     doc.scrollTop = cm.display.scroller.scrollTop
@@ -176,6 +170,25 @@ function endOperation_finish(op) {
     signal(cm, "changes", cm, op.changeObjs)
   if (op.update)
     op.update.finish()
+}
+
+export function fireHiddenHandlers(op) {
+  // Fire events for markers that are hidden/unhidden by editing or
+  // undoing
+  let hidden = op.maybeHiddenMarkers, unhidden = op.maybeUnhiddenMarkers
+  if (hidden) {
+    op.maybeHiddenMarkers = null;
+    for (let i = 0; i < hidden.length; ++i) {
+      if (!hidden[i].marker.lines.length) signal(hidden[i].marker, "hide", hidden[i].change);
+    }
+  }
+
+  if (unhidden) {
+    for (let i = 0; i < unhidden.length; ++i) {
+      if (unhidden[i].lines.length) signal(unhidden[i], "unhide")
+    }
+    op.maybeUnhiddenMarkers = null;
+  }
 }
 
 // Run the given function in an operation
