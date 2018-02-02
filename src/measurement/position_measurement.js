@@ -666,6 +666,13 @@ export function estimateLineHeights(cm) {
   })
 }
 
+export function estimateLineHeight(cm, lineNumber) {
+  let doc = cm.doc, est = estimateHeight(cm);
+  let line = getLine(doc, lineNumber);
+  let estHeight = est(line);
+  if (estHeight != line.height) updateLineHeight(line, estHeight);
+}
+
 // Given a mouse event, find the corresponding position. If liberal
 // is false, it checks whether a gutter or scrollbar was clicked,
 // and returns null if it was. forRect is used by rectangular
