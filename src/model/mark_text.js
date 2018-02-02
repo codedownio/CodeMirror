@@ -139,11 +139,14 @@ export class TextMarker {
     this.lines.push(line)
   }
 
-  detachLine(line) {
+  detachLine(line, change) {
     this.lines.splice(indexOf(this.lines, line), 1)
     if (!this.lines.length && this.doc.cm) {
       let op = this.doc.cm.curOp
-      ;(op.maybeHiddenMarkers || (op.maybeHiddenMarkers = [])).push(this)
+      ;(op.maybeHiddenMarkers || (op.maybeHiddenMarkers = [])).push({
+        marker: this,
+        change: change
+      })
     }
   }
 }
