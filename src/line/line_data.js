@@ -52,7 +52,7 @@ function interpretTokenStyle(style, options) {
   if (!style || /^\s*$/.test(style)) return null
   let cache = options.addModeClass ? styleToClassCacheWithMode : styleToClassCache
   return cache[style] ||
-    (cache[style] = style.replace(/\S+/g, "cm-$&"))
+    (cache[style] = style.replace(/\S+/g, "$&"))
 }
 
 // Render the DOM representation of the text of a line. Also builds
