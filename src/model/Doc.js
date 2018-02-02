@@ -70,10 +70,12 @@ Doc.prototype = createObj(BranchChunk.prototype, {
     if (lineSep === false) return lines
     return lines.join(lineSep || this.lineSeparator())
   },
-  setValue: docMethodOp(function(code) {
+  setValue: docMethodOp(function(code, otherOrigin) {
+    var origin = otherOrigin || "setValue";
+
     let top = Pos(this.first, 0), last = this.first + this.size - 1
     makeChange(this, {from: top, to: Pos(last, getLine(this, last).text.length),
-                      text: this.splitLines(code), origin: "setValue", full: true}, true)
+                      text: this.splitLines(code), origin: origin, full: true}, true)
     setSelection(this, simpleSelection(top))
   }),
   replaceRange: function(code, from, to, origin) {
