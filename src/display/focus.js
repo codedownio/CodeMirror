@@ -19,6 +19,14 @@ export function onFocus(cm, e) {
   if (cm.state.delayingBlurEvent) cm.state.delayingBlurEvent = false
 
   if (cm.options.readOnly == "nocursor") return
+
+  // Hack: allow users to cancel the focus by subscribing to a "prefocus" event
+  signal(cm, "prefocus", cm, e);
+  if (cm.state.skipFocus) {
+      cm.state.skipFocus = false;
+      return;
+  }
+
   if (!cm.state.focused) {
     cm.state.focused = true
     addClass(cm.display.wrapper, "CodeMirror-focused")
