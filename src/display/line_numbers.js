@@ -32,9 +32,10 @@ export function alignHorizontally(cm) {
 export function maybeUpdateLineNumberWidth(cm) {
   if (!cm.options.lineNumbers) return false
   let doc = cm.doc, last = lineNumberFor(cm.options, doc.first + doc.size - 1), display = cm.display
+  let span = [elt("span", last, "CodeMirror-linenumber-span")]
   if (last.length != display.lineNumChars) {
-    let test = display.measure.appendChild(elt("div", [elt("div", last)],
-                                               "CodeMirror-linenumber CodeMirror-gutter-elt"))
+    let test = display.measure.appendChild(elt("div", [elt("div", span)],
+                                               "CodeMirror-linenumber linenumber CodeMirror-gutter-elt"))
     let innerW = test.firstChild.offsetWidth, padding = test.offsetWidth - innerW
     display.lineGutter.style.width = ""
     display.lineNumInnerWidth = Math.max(innerW, display.lineGutter.offsetWidth - padding) + 1
