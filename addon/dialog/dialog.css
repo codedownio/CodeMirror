@@ -2,7 +2,7 @@
   position: absolute;
   left: 0; right: 0;
   background: inherit;
-  z-index: 15;
+  z-index: 5; /* This should be lower than the .CodeMirror-vscrollbar value of 5 */
   padding: .1em .8em;
   overflow: hidden;
   color: inherit;
