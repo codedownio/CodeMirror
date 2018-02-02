@@ -21,6 +21,12 @@
     for (var i = 0; i < ranges.length; i++) {
       var pos = ranges[i].head;
       var eolState = cm.getStateAfter(pos.line);
+
+      // If we're in multiplexing mode, pull out the currently active state.
+      if (eolState.outer) {
+        eolState = eolState.inner || eolState.outer;
+      }
+
       var inList = eolState.list !== false;
       var inQuote = eolState.quote !== 0;
 
@@ -31,11 +37,7 @@
         return;
       }
       if (emptyListRE.test(line)) {
-        if (!/>\s*$/.test(line)) cm.replaceRange("", {
-          line: pos.line, ch: 0
-        }, {
-          line: pos.line, ch: pos.ch + 1
-        });
+        cm.replaceRange("", { line: pos.line, ch: 0 }, { line: pos.line, ch: pos.ch + 1 });
         replacements[i] = "\n";
       } else {
         var indent = match[1], after = match[5];
