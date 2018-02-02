@@ -12,7 +12,7 @@
   CodeMirror.defineExtension("addPanel", function(node, options) {
     options = options || {};
 
-    if (!this.state.panels) initPanels(this);
+    if (!this.state.panels) initPanels(this, options);
 
     var info = this.state.panels;
     var wrapper = info.wrapper;
@@ -60,7 +60,7 @@
     if (this.options.stable && isAtTop(this.cm, this.node))
       this.cm.scrollTo(null, this.cm.getScrollInfo().top - this.height)
     info.wrapper.removeChild(this.node);
-    if (--info.panels == 0) removePanels(this.cm);
+    // if (--info.panels == 0) removePanels(this.cm);
   };
 
   Panel.prototype.changed = function(height) {
@@ -70,7 +70,7 @@
     this.height = newHeight;
   };
 
-  function initPanels(cm) {
+  function initPanels(cm, options) {
     var wrap = cm.getWrapperElement();
     var style = window.getComputedStyle ? window.getComputedStyle(wrap) : wrap.currentStyle;
     var height = parseInt(style.height);
@@ -78,12 +78,14 @@
       setHeight: wrap.style.height,
       heightLeft: height,
       panels: 0,
-      wrapper: document.createElement("div")
+      wrapper: options.wrapper || document.createElement("div")
     };
-    wrap.parentNode.insertBefore(info.wrapper, wrap);
-    var hasFocus = cm.hasFocus();
-    info.wrapper.appendChild(wrap);
-    if (hasFocus) cm.focus();
+    if (!options.wrapper) {
+      wrap.parentNode.insertBefore(info.wrapper, wrap);
+      var hasFocus = cm.hasFocus();
+      info.wrapper.appendChild(wrap);
+      if (hasFocus) cm.focus();
+    }
 
     cm._setSize = cm.setSize;
     if (height != null) cm.setSize = function(width, newHeight) {
