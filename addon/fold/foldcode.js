@@ -76,6 +76,12 @@
 
   // New-style interface
   CodeMirror.defineExtension("foldCode", function(pos, options, force) {
+    // Give subscribers a chance to provide a custom widget
+    options = options || {};
+    var ret = {};
+    CodeMirror.signal(this, "getFoldWidget", pos, ret);
+    if (ret.widget) options.widget = ret.widget;
+
     doFold(this, pos, options, force);
   });
 
