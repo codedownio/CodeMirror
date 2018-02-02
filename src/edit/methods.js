@@ -12,7 +12,7 @@ import { getKeyMap } from "../input/keymap.js"
 import { endOfLine, moveLogically, moveVisually } from "../input/movement.js"
 import { endOperation, methodOp, operation, runInOp, startOperation } from "../display/operations.js"
 import { clipLine, clipPos, equalCursorPos, Pos } from "../line/pos.js"
-import { charCoords, charWidth, clearCaches, clearLineMeasurementCache, coordsChar, cursorCoords, displayHeight, displayWidth, estimateLineHeights, fromCoordSystem, intoCoordSystem, scrollGap, textHeight } from "../measurement/position_measurement.js"
+import { charCoords, charWidth, clearCaches, clearLineMeasurementCache, coordsChar, cursorCoords, displayHeight, displayWidth, estimateLineHeight, estimateLineHeights, fromCoordSystem, intoCoordSystem, scrollGap, textHeight } from "../measurement/position_measurement.js"
 import { Range } from "../model/selection.js"
 import { replaceOneSelection, skipAtomic } from "../model/selection_updates.js"
 import { addToScrollTop, ensureCursorVisible, scrollIntoView, scrollToCoords, scrollToCoordsRange, scrollToRange } from "../display/scrolling.js"
@@ -418,6 +418,12 @@ export default function(CodeMirror) {
       if (oldHeight == null || Math.abs(oldHeight - textHeight(this.display)) > .5)
         estimateLineHeights(this)
       signal(this, "refresh", this)
+    }),
+
+    refreshLineHeight: methodOp(function(lineNumber) {
+      // TODO: is it possible to clear the caches less invasively, like only for the line in question?
+      clearCaches(this)
+      estimateLineHeight(this, lineNumber)
     }),
 
     swapDoc: methodOp(function(doc) {
