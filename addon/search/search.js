@@ -171,9 +171,13 @@
       if (!cursor.find(rev)) return;
     }
     cm.setSelection(cursor.from(), cursor.to());
-    cm.scrollIntoView({from: cursor.from(), to: cursor.to()}, 20);
+
+    // The margin is measured in pixels, so let's make it half the height of the scroller
+    var margin = cm.display.scroller.clientHeight / 2;
+
+    cm.scrollIntoView({from: cursor.from(), to: cursor.to()}, margin);
     state.posFrom = cursor.from(); state.posTo = cursor.to();
-    if (callback) callback(cursor.from(), cursor.to())
+    if (callback) callback(cursor.from(), cursor.to());
   });}
 
   function clearSearch(cm) {cm.operation(function() {
