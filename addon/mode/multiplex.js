@@ -47,8 +47,9 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
         for (var i = 0; i < others.length; ++i) {
           var other = others[i];
           var found = indexOf(oldContent, other.open, stream.pos);
-          if (found == stream.pos) {
-            if (!other.parseDelimiters) stream.match(other.open);
+          if (found == stream.pos && (!other.openMustBeAtBeginningOfLine || (stream.pos == 0))) {
+            var matchObject;
+            if (!other.parseDelimiters) matchObject = stream.match(other.open);
             state.innerActive = other;
 
             // Get the outer indent, making sure to handle CodeMirror.Pass
@@ -58,7 +59,8 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
               if (possibleOuterIndent !== CodeMirror.Pass) outerIndent = possibleOuterIndent;
             }
 
-            state.inner = CodeMirror.startState(other.mode, outerIndent);
+            state.inner = CodeMirror.startState(other.mode, outerIndent, matchObject);
+
             return other.delimStyle && (other.delimStyle + " " + other.delimStyle + "-open");
           } else if (found != -1 && found < cutOff) {
             cutOff = found;
@@ -70,16 +72,27 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
         return outerToken;
       } else {
         var curInner = state.innerActive, oldContent = stream.string;
+
+        // If there's no close and we're at the start of a line, exit the inner state
         if (!curInner.close && stream.sol()) {
           state.innerActive = state.inner = null;
           return this.token(stream, state);
         }
+
+        // If the special closeOnNewline is passed, and we're at the beginning of a line, exit the inner state
+        if (curInner.closeOnNewline && stream.sol()) {
+          state.innerActive = state.inner = null;
+          return this.token(stream, state);
+        }
+
+        // If the close token is found, exit the inner state
         var found = curInner.close ? indexOf(oldContent, curInner.close, stream.pos, curInner.parseDelimiters) : -1;
         if (found == stream.pos && !curInner.parseDelimiters) {
           stream.match(curInner.close);
           state.innerActive = state.inner = null;
           return curInner.delimStyle && (curInner.delimStyle + " " + curInner.delimStyle + "-close");
         }
+
         if (found > -1) stream.string = oldContent.slice(0, found);
         var innerToken = curInner.mode.token(stream, state.inner);
         if (found > -1) stream.string = oldContent;
