@@ -1,5 +1,5 @@
 import { eltP } from "../util/dom.js"
-import { eventMixin, hasHandler, on } from "../util/event.js"
+import { eventMixin, hasHandler, on, signal } from "../util/event.js"
 import { endOperation, operation, runInOp, startOperation } from "../display/operations.js"
 import { clipPos, cmp, Pos } from "../line/pos.js"
 import { lineNo, updateLineHeight } from "../line/utils_line.js"
@@ -41,13 +41,16 @@ export class TextMarker {
   }
 
   // Clear the marker.
-  clear() {
+  clear(signalImmediately) {
     if (this.explicitlyCleared) return
     let cm = this.doc.cm, withOp = cm && !cm.curOp
     if (withOp) startOperation(cm)
+
+    let found
+
     if (hasHandler(this, "clear")) {
       let found = this.find()
-      if (found) signalLater(this, "clear", found.from, found.to)
+      if (found && !signalImmediately) signalLater(this, "clear", found.from, found.to)
     }
     let min = null, max = null
     for (let i = 0; i < this.lines.length; ++i) {
@@ -78,6 +81,12 @@ export class TextMarker {
       this.doc.cantEdit = false
       if (cm) reCheckSelection(cm.doc)
     }
+
+    // If the signalImmediately flag is true, signal now
+    if (signalImmediately && hasHandler(this, "clear") && found) {
+      signal(this, "clear", found.from, found.to);
+    };
+
     if (cm) signalLater(cm, "markerCleared", cm, this, min, max)
     if (withOp) endOperation(cm)
     if (this.parent) this.parent.clear()
