@@ -14,13 +14,13 @@ acorn-object-spread@^1.0.0:
   dependencies:
     acorn "^3.1.0"
 
-acorn@^2.0.1:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-2.7.0.tgz#ab6e7d9d886aaca8b085bc3312b79a198433f0e7"
-
 acorn@^3.0.4, acorn@^3.1.0, acorn@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
+
+acorn@^5.1.0:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.4.1.tgz#fdc58d9d17f4a4e98d102ded826a9b9759125102"
 
 ajv@^5.1.0:
   version "5.5.2"
@@ -73,11 +73,11 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-blint@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/blint/-/blint-0.5.1.tgz#d00452e2a9c623df69f90e3ef4f880e6e84b1681"
+blint@^1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/blint/-/blint-1.0.3.tgz#a58d344ae4bf0ebb917316cfa3a5948e8d92fe10"
   dependencies:
-    acorn "^2.0.1"
+    acorn "^5.1.0"
     nomnom "^1.8.1"
 
 boom@4.x.x:
@@ -530,6 +530,10 @@ request@^2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.1.0"
 
+require-relative@0.8.7:
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/require-relative/-/require-relative-0.8.7.tgz#7999539fc9e047a37928fa196f8e1563dabd36de"
+
 rollup-plugin-buble@^0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/rollup-plugin-buble/-/rollup-plugin-buble-0.15.0.tgz#83c3e89c7fd2266c7918f41ba3980313519c7fd0"
@@ -544,25 +548,21 @@ rollup-pluginutils@^1.5.0:
     estree-walker "^0.2.1"
     minimatch "^3.0.2"
 
-rollup-watch@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/rollup-watch/-/rollup-watch-2.5.0.tgz#852d660ddecc51696890aa8c22e95ed4558cc5f7"
+rollup-watch@^3.2.0:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/rollup-watch/-/rollup-watch-3.2.2.tgz#5e574232e9ef36da9177f46946d8080cb267354b"
   dependencies:
-    semver "^5.1.0"
+    require-relative "0.8.7"
 
-rollup@^0.34.10:
-  version "0.34.13"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.34.13.tgz#a211cdde31f96cb39e7cb4e35becb15ddc3efa19"
+rollup@^0.41.0:
+  version "0.41.6"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.41.6.tgz#e0d05497877a398c104d816d2733a718a7a94e2a"
   dependencies:
     source-map-support "^0.4.0"
 
 safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
-
-semver@^5.1.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
 sntp@2.x.x:
   version "2.1.0"
