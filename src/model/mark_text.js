@@ -49,7 +49,7 @@ export class TextMarker {
     let found
 
     if (hasHandler(this, "clear")) {
-      let found = this.find()
+      found = this.find()
       if (found && !signalImmediately) signalLater(this, "clear", found.from, found.to)
     }
     let min = null, max = null
