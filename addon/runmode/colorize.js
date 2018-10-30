@@ -21,7 +21,7 @@
     }
   }
 
-  CodeMirror.colorize = function(collection, defaultMode) {
+  CodeMirror.colorize = function(collection, defaultMode, defaultTheme) {
     if (!collection) collection = document.body.getElementsByTagName("pre");
 
     for (var i = 0; i < collection.length; ++i) {
@@ -34,7 +34,8 @@
       node.innerHTML = "";
       CodeMirror.runMode(text.join(""), mode, node);
 
-      node.className += " cm-s-default";
+
+      node.className += " " + (defaultTheme || "cm-s-default");
     }
   };
 });
