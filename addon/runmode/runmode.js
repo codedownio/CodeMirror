@@ -48,7 +48,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
 
       if (style) {
         var sp = node.appendChild(document.createElement("span"));
-        sp.className = "cm-" + style.replace(/ +/g, " cm-");
+        sp.className = style;
         sp.appendChild(document.createTextNode(content));
       } else {
         node.appendChild(document.createTextNode(content));
