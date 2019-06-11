@@ -154,8 +154,8 @@ function skipAtomicInner(doc, pos, oldPos, dir, mayClear) {
     // Determine if we should prevent the cursor being placed to the left/right of an atomic marker
     // Historically this was determined using the inclusiveLeft/Right option, but the new way to control it
     // is with preventCursorLeft/Right
-    let preventCursorLeft = ("preventCursorLeft" in m) ? m.preventCursorLeft : m.inclusiveLeft
-    let preventCursorRight = ("preventCursorRight" in m) ? m.preventCursorRight : m.inclusiveRight
+    let preventCursorLeft = ("selectLeft" in m) ? !m.selectLeft : m.inclusiveLeft
+    let preventCursorRight = ("selectRight" in m) ? !m.selectRight : m.inclusiveRight
 
     if ((sp.from == null || (preventCursorLeft ? sp.from <= pos.ch : sp.from < pos.ch)) &&
         (sp.to == null || (preventCursorRight ? sp.to >= pos.ch : sp.to > pos.ch))) {
