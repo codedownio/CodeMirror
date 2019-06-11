@@ -1817,7 +1817,7 @@ testCM("atomicMarker", function(cm) {
     };
 
     if (ls === true || ls === false) options["selectLeft"] = ls;
-    if (rs === true || rs === false) options["selectRight"] = ls;
+    if (rs === true || rs === false) options["selectRight"] = rs;
 
     return cm.markText(Pos(ll, cl), Pos(lr, cr), options);
   }
@@ -1867,7 +1867,7 @@ testCM("atomicMarker", function(cm) {
   cm.setCursor(Pos(0, 0));
   eqCursorPos(cm.getCursor(), Pos(0, 0));
   cm.execCommand("goCharRight");
-  eqCursorPos(cm.getCursor(), Pos(0, 5)); // TODO: this is wrong
+  eqCursorPos(cm.getCursor(), Pos(0, 6));
   m.clear();
 
   // Can cursor to the right of a marker when inclusiveRight=false and selectRight=True
