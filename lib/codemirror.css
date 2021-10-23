@@ -111,10 +111,10 @@
 
 .cm-s-default .header {color: blue;}
 .cm-s-default .quote {color: #090;}
-.negative {color: #d44;}
-.positive {color: #292;}
-.link {text-decoration: underline;}
-.strikethrough {text-decoration: line-through;}
+.cm-s-default .negative {color: #d44;}
+.cm-s-default .positive {color: #292;}
+.cm-s-default .link {text-decoration: underline;}
+.cm-s-default .strikethrough {text-decoration: line-through;}
 
 .cm-s-default .keyword {color: #708;}
 .cm-s-default .atom {color: #219;}
@@ -139,7 +139,7 @@
 .cm-s-default .link {color: #00c;}
 
 .cm-s-default .error {color: #f00;}
-.invalidchar {color: #f00;}
+.cm-s-default .invalidchar {color: #f00;}
 
 .CodeMirror-composing { border-bottom: 2px solid; }
 
