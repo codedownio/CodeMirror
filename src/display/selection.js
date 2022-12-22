@@ -1,9 +1,9 @@
 import { Pos } from "../line/pos.js"
-import { visualLine } from "../line/spans.js"
-import { getLine } from "../line/utils_line.js"
 import { charCoords, cursorCoords, displayWidth, paddingH, wrappedLineExtentChar } from "../measurement/position_measurement.js"
-import { getOrder, iterateBidiSections } from "../util/bidi.js"
 import { elt } from "../util/dom.js"
+import { getLine } from "../line/utils_line.js"
+import { getOrder, iterateBidiSections } from "../util/bidi.js"
+import { visualLine } from "../line/spans.js"
 
 export function updateSelection(cm) {
   cm.display.input.showSelection(cm.display.input.prepareSelection())
@@ -71,14 +71,6 @@ function drawSelectionRange(cm, range, output) {
     let lineLen = lineObj.text.length
     let start, end
     function coords(ch, bias) {
-      if (ch === 0 && bias === "left") {
-        // We sometimes set a margin-left on .codeblock-text:first-child to cause code block cells
-        // to be indented slightly. In this case we want the selection to go all the way to the side of
-        // the editor, since it looks a little funny if it only goes to the edge of the character.
-        let ret = charCoords(cm, Pos(line, ch), "div", lineObj, bias);
-        ret.left = leftSide;
-        return ret;
-      }
       return charCoords(cm, Pos(line, ch), "div", lineObj, bias)
     }
 
@@ -88,6 +80,8 @@ function drawSelectionRange(cm, range, output) {
       let ch = side == "after" ? extent.begin : extent.end - (/\s/.test(lineObj.text.charAt(extent.end - 1)) ? 2 : 1)
       return coords(ch, prop)[prop]
     }
+
+    let widthAdjust = lineObj.wrapClass === "codeblock" ? (-4) : 0;
 
     let order = getOrder(lineObj, doc.direction)
     iterateBidiSections(order, fromArg || 0, toArg == null ? lineLen : toArg, (from, to, dir, i) => {
@@ -102,7 +96,7 @@ function drawSelectionRange(cm, range, output) {
         let openRight = (docLTR ? openEnd : openStart) && last
         let left = openLeft ? leftSide : (ltr ? fromPos : toPos).left
         let right = openRight ? rightSide : (ltr ? toPos : fromPos).right
-        add(left, fromPos.top, right - left, fromPos.bottom)
+        add(left, fromPos.top, right - left + widthAdjust, fromPos.bottom)
       } else { // Multiple lines
         let topLeft, topRight, botLeft, botRight
         if (ltr) {
@@ -116,9 +110,9 @@ function drawSelectionRange(cm, range, output) {
           botLeft = !docLTR && openEnd && last ? leftSide : toPos.left
           botRight = !docLTR ? rightSide : wrapX(to, dir, "after")
         }
-        add(topLeft, fromPos.top, topRight - topLeft, fromPos.bottom)
-        if (fromPos.bottom < toPos.top) add(leftSide, fromPos.bottom, null, toPos.top)
-        add(botLeft, toPos.top, botRight - botLeft, toPos.bottom)
+        add(topLeft, fromPos.top, topRight - topLeft + widthAdjust, fromPos.bottom)
+        if (fromPos.bottom < toPos.top) add(leftSide, fromPos.bottom, rightSide - left + widthAdjust, toPos.top)
+        add(botLeft, toPos.top, botRight - botLeft + widthAdjust, toPos.bottom)
       }
 
       if (!start || cmpCoords(fromPos, start) < 0) start = fromPos
@@ -136,7 +130,7 @@ function drawSelectionRange(cm, range, output) {
     let fromLine = getLine(doc, sFrom.line), toLine = getLine(doc, sTo.line)
     let singleVLine = visualLine(fromLine) == visualLine(toLine)
     let leftEnd = drawForLine(sFrom.line, sFrom.ch, singleVLine ? fromLine.text.length + 1 : null).end
-    let rightStart = drawForLine(sTo.line, singleVLine ? 0 : null, sTo.ch).start
+    let rightStart = drawForLine(sTo.line, 0, sTo.ch).start
     if (singleVLine) {
       if (leftEnd.top < rightStart.top - 2) {
         add(leftEnd.right, leftEnd.top, null, leftEnd.bottom)
@@ -145,8 +139,22 @@ function drawSelectionRange(cm, range, output) {
         add(leftEnd.right, leftEnd.top, rightStart.left - leftEnd.right, leftEnd.bottom)
       }
     }
-    if (leftEnd.bottom < rightStart.top)
-      add(leftSide, leftEnd.bottom, null, rightStart.top)
+    if (leftEnd.bottom < rightStart.top) {
+      let curTop = leftEnd.bottom;
+      for (let i = sFrom.line + 1; i < sTo.line; i += 1) {
+        function extractValue(obj) { return obj.wrapClass === "codeblock"; }
+        let start = i
+        let currentValue = extractValue(getLine(doc, i));
+        while (i + 1 < sTo.line && extractValue(getLine(doc, i + 1)) === currentValue) {
+          i += 1
+        }
+
+        let bottom = charCoords(cm, Pos(i, cm.getLine(i).length), "div", getLine(doc, i), "left").bottom
+        let left = leftSide + (currentValue ? 4 : 0)
+        add(left, curTop, rightSide - left - (currentValue ? 4 : 0), bottom)
+        curTop = bottom
+      }
+    }
   }
 
   output.appendChild(fragment)
