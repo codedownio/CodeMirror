@@ -81,8 +81,6 @@ function drawSelectionRange(cm, range, output) {
       return coords(ch, prop)[prop]
     }
 
-    let widthAdjust = lineObj.wrapClass === "codeblock" ? (-4) : 0;
-
     let order = getOrder(lineObj, doc.direction)
     iterateBidiSections(order, fromArg || 0, toArg == null ? lineLen : toArg, (from, to, dir, i) => {
       let ltr = dir == "ltr"
@@ -96,9 +94,12 @@ function drawSelectionRange(cm, range, output) {
         let openRight = (docLTR ? openEnd : openStart) && last
         let left = openLeft ? leftSide : (ltr ? fromPos : toPos).left
         let right = openRight ? rightSide : (ltr ? toPos : fromPos).right
+        let widthAdjust = (openRight && lineObj.wrapClass === "codeblock") ? (-4) : 0;
         add(left, fromPos.top, right - left + widthAdjust, fromPos.bottom)
       } else { // Multiple lines
         let topLeft, topRight, botLeft, botRight
+        let widthAdjust = lineObj.wrapClass === "codeblock" ? (-4) : 0;
+
         if (ltr) {
           topLeft = docLTR && openStart && first ? leftSide : fromPos.left
           topRight = docLTR ? rightSide : wrapX(from, dir, "before")
