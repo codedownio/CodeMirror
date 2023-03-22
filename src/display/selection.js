@@ -101,22 +101,25 @@ function drawSelectionRange(cm, range, output) {
         add(left, fromPos.top, right - left + widthAdjust, fromPos.bottom)
       } else { // Multiple lines
         let topLeft, topRight, botLeft, botRight
-        let widthAdjust = isCodeBlockLine ? (-4) : 0;
+
+        let widthAdjust = isCodeBlockLine ? 4 : 0;
+        let leftSideToUse = leftSide + widthAdjust;
+        let rightSideToUse = rightSide - widthAdjust;
 
         if (ltr) {
-          topLeft = docLTR && openStart && first ? leftSide : fromPos.left
-          topRight = docLTR ? rightSide : wrapX(from, dir, "before")
-          botLeft = docLTR ? leftSide : wrapX(to, dir, "after")
-          botRight = docLTR && openEnd && last ? rightSide : toPos.right
+          topLeft = (docLTR && openStart && first ? leftSideToUse : fromPos.left)
+          topRight = (docLTR ? rightSideToUse : wrapX(from, dir, "before"))
+          botLeft = (docLTR ? leftSideToUse : wrapX(to, dir, "after"))
+          botRight = (docLTR && openEnd && last ? rightSideToUse : toPos.right)
         } else {
-          topLeft = !docLTR ? leftSide : wrapX(from, dir, "before")
-          topRight = !docLTR && openStart && first ? rightSide : fromPos.right
-          botLeft = !docLTR && openEnd && last ? leftSide : toPos.left
-          botRight = !docLTR ? rightSide : wrapX(to, dir, "after")
+          topLeft = !docLTR ? leftSideToUse : wrapX(from, dir, "before")
+          topRight = !docLTR && openStart && first ? rightSideToUse : fromPos.right
+          botLeft = !docLTR && openEnd && last ? leftSideToUse : toPos.left
+          botRight = !docLTR ? rightSideToUse : wrapX(to, dir, "after")
         }
-        add(topLeft, fromPos.top, topRight - topLeft + widthAdjust, fromPos.bottom)
-        if (fromPos.bottom < toPos.top) add(leftSide, fromPos.bottom, rightSide - leftSide + widthAdjust, toPos.top)
-        add(botLeft, toPos.top, botRight - botLeft + widthAdjust, toPos.bottom)
+        add(topLeft, fromPos.top, topRight - topLeft, fromPos.bottom)
+        if (fromPos.bottom < toPos.top) add(leftSideToUse, fromPos.bottom, rightSideToUse - leftSideToUse, toPos.top)
+        add(botLeft, toPos.top, botRight - botLeft, toPos.bottom)
       }
 
       if (!start || cmpCoords(fromPos, start) < 0) start = fromPos
