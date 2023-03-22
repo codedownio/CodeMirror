@@ -57,6 +57,8 @@ function drawSelectionRange(cm, range, output) {
   let rightSide = display.lineDiv.offsetWidth - padding.right;
   let docLTR = doc.direction == "ltr"
 
+  function isCodeBlockLineObj(obj) { return obj.wrapClass && (obj.wrapClass.split(" ").indexOf("codeblock") !== -1); }
+
   function add(left, top, width, bottom) {
     if (top < 0) top = 0
     top = Math.round(top)
@@ -68,7 +70,7 @@ function drawSelectionRange(cm, range, output) {
 
   function drawForLine(line, fromArg, toArg) {
     let lineObj = getLine(doc, line)
-    let isCodeBlockLine = lineObj.wrapClass && (lineObj.wrapClass.split(" ").indexOf("codeblock") !== -1)
+    let isCodeBlockLine = isCodeBlockLineObj(lineObj)
     let lineLen = lineObj.text.length
     let start, end
     function coords(ch, bias) {
@@ -144,10 +146,9 @@ function drawSelectionRange(cm, range, output) {
     if (leftEnd.bottom < rightStart.top) {
       let curTop = leftEnd.bottom;
       for (let i = sFrom.line + 1; i < sTo.line; i += 1) {
-        function extractValue(obj) { return obj.wrapClass === "codeblock"; }
         let start = i
-        let currentValue = extractValue(getLine(doc, i));
-        while (i + 1 < sTo.line && extractValue(getLine(doc, i + 1)) === currentValue) {
+        let currentValue = isCodeBlockLineObj(getLine(doc, i));
+        while (i + 1 < sTo.line && isCodeBlockLineObj(getLine(doc, i + 1)) === currentValue) {
           i += 1
         }
 
