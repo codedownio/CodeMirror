@@ -4,7 +4,7 @@ import { collapsedSpanAround, heightAtLine, lineIsHidden, visualLine } from "../
 import { getLine, lineAtHeight, lineNo, updateLineHeight } from "../line/utils_line.js"
 import { bidiOther, getBidiPartAt, getOrder } from "../util/bidi.js"
 import { chrome, android, ie, ie_version } from "../util/browser.js"
-import { elt, removeChildren, range, removeChildrenAndAdd } from "../util/dom.js"
+import { elt, getWindow, removeChildren, range, removeChildrenAndAdd } from "../util/dom.js"
 import { e_target } from "../util/event.js"
 import { hasBadZoomedRects } from "../util/feature_detection.js"
 import { countColumn, findFirst, isExtendingChar, scrollerGap, skipExtendingChars } from "../util/misc.js"
@@ -19,7 +19,7 @@ export function paddingVert(display) {return display.mover.offsetHeight - displa
 export function paddingH(display) {
   if (display.cachedPaddingH) return display.cachedPaddingH
   let e = removeChildrenAndAdd(display.measure, elt("pre", "x", "CodeMirror-line-like"))
-  let style = window.getComputedStyle ? window.getComputedStyle(e) : e.currentStyle
+  let style = getWindow().getComputedStyle ? getWindow().getComputedStyle(e) : e.currentStyle
   let data = {left: parseInt(style.paddingLeft), right: parseInt(style.paddingRight)}
   if (!isNaN(data.left) && !isNaN(data.right)) display.cachedPaddingH = data
   return data
@@ -248,7 +248,7 @@ function measureCharInner(cm, prepared, ch, bias) {
 // Work around problem with bounding client rects on ranges being
 // returned incorrectly when zoomed on IE10 and below.
 function maybeUpdateRectForZooming(measure, rect) {
-  if (!window.screen || screen.logicalXDPI == null ||
+  if (!getWindow().screen || screen.logicalXDPI == null ||
       screen.logicalXDPI == screen.deviceXDPI || !hasBadZoomedRects(measure))
     return rect
   let scaleX = screen.logicalXDPI / screen.deviceXDPI
@@ -285,11 +285,11 @@ function pageScrollX() {
   // which causes page_Offset and bounding client rects to use
   // different reference viewports and invalidate our calculations.
   if (chrome && android) return -(document.body.getBoundingClientRect().left - parseInt(getComputedStyle(document.body).marginLeft))
-  return window.pageXOffset || (document.documentElement || document.body).scrollLeft
+  return getWindow().pageXOffset || (document.documentElement || document.body).scrollLeft
 }
 function pageScrollY() {
   if (chrome && android) return -(document.body.getBoundingClientRect().top - parseInt(getComputedStyle(document.body).marginTop))
-  return window.pageYOffset || (document.documentElement || document.body).scrollTop
+  return getWindow().pageYOffset || (document.documentElement || document.body).scrollTop
 }
 
 function widgetTopHeight(lineObj) {

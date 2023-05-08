@@ -8,7 +8,7 @@ import { changeEnd } from "../model/change_measurement.js"
 import { simpleSelection } from "../model/selection.js"
 import { setSelectionNoUndo, setSelectionReplaceHistory } from "../model/selection_updates.js"
 import { ie, presto, safari } from "../util/browser.js"
-import { elt, removeChildrenAndAdd } from "../util/dom.js"
+import { elt, getWindow, removeChildrenAndAdd } from "../util/dom.js"
 import { e_preventDefault, e_stop, signalDOMEvent } from "../util/event.js"
 import { indexOf } from "../util/misc.js"
 
@@ -27,7 +27,7 @@ export function onDrop(e) {
   if (!pos || cm.isReadOnly()) return
   // Might be a file drop, in which case we simply extract the text
   // and insert it.
-  if (files && files.length && window.FileReader && window.File) {
+  if (files && files.length && getWindow().FileReader && getWindow().File) {
     let n = files.length, text = Array(n), read = 0
     let loadFile = (file, i) => {
       if (cm.options.allowDropFileTypes &&

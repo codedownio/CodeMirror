@@ -1,7 +1,7 @@
 import { Pos } from "../line/pos.js"
 import { cursorCoords, displayHeight, displayWidth, estimateCoords, paddingTop, paddingVert, scrollGap, textHeight } from "../measurement/position_measurement.js"
+import { elt, getWindow } from "../util/dom.js"
 import { gecko, phantom } from "../util/browser.js"
-import { elt } from "../util/dom.js"
 import { signalDOMEvent } from "../util/event.js"
 
 import { startWorker } from "./highlight_worker.js"
@@ -17,7 +17,7 @@ export function maybeScrollWindow(cm, rect) {
 
   let display = cm.display, box = display.sizer.getBoundingClientRect(), doScroll = null
   if (rect.top + box.top < 0) doScroll = true
-  else if (rect.bottom + box.top > (window.innerHeight || document.documentElement.clientHeight)) doScroll = false
+  else if (rect.bottom + box.top > (getWindow().innerHeight || document.documentElement.clientHeight)) doScroll = false
   if (doScroll != null && !phantom) {
     let scrollNode = elt("div", "\u200b", null, `position: absolute;
                          top: ${rect.top - display.viewOffset - paddingTop(cm.display)}px;

@@ -1,4 +1,4 @@
-import { elt, range, removeChildren, removeChildrenAndAdd } from "./dom.js"
+import { elt, getWindow, range, removeChildren, removeChildrenAndAdd } from "./dom.js"
 import { ie, ie_version } from "./browser.js"
 
 // Detect drag-and-drop
@@ -56,7 +56,7 @@ export let splitLinesAuto = "\n\nb".split(/\n/).length != 3 ? string => {
   return result
 } : string => string.split(/\r\n?|\n/)
 
-export let hasSelection = window.getSelection ? te => {
+export let hasSelection = getWindow().getSelection ? te => {
   try { return te.selectionStart != te.selectionEnd }
   catch(e) { return false }
 } : te => {

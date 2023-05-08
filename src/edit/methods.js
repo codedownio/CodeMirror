@@ -1,7 +1,7 @@
 import { deleteNearSelection } from "./deleteNearSelection.js"
 import { commands } from "./commands.js"
 import { attachDoc } from "../model/document_data.js"
-import { activeElt, addClass, rmClass } from "../util/dom.js"
+import { activeElt, addClass, getWindow, rmClass } from "../util/dom.js"
 import { eventMixin, signal } from "../util/event.js"
 import { getLineStyles, getContextBefore, takeToken } from "../line/highlight.js"
 import { indentLine } from "../input/indent.js"
@@ -38,7 +38,7 @@ export default function(CodeMirror) {
 
   CodeMirror.prototype = {
     constructor: CodeMirror,
-    focus: function(){window.focus(); this.display.input.focus()},
+    focus: function(){getWindow().focus(); this.display.input.focus()},
 
     setOption: function(option, value) {
       let options = this.options, old = options[option]
@@ -538,7 +538,7 @@ function findPosH(doc, pos, dir, unit, visually) {
 function findPosV(cm, pos, dir, unit) {
   let doc = cm.doc, x = pos.left, y
   if (unit == "page") {
-    let pageSize = Math.min(cm.display.wrapper.clientHeight, window.innerHeight || document.documentElement.clientHeight)
+    let pageSize = Math.min(cm.display.wrapper.clientHeight, getWindow().innerHeight || document.documentElement.clientHeight)
     let moveAmount = Math.max(pageSize - .5 * textHeight(cm.display), 3)
     y = (dir > 0 ? pos.bottom : pos.top) + dir * moveAmount
 

@@ -6,7 +6,7 @@ import { eventInWidget } from "../measurement/widgets.js"
 import { simpleSelection } from "../model/selection.js"
 import { selectAll, setSelection } from "../model/selection_updates.js"
 import { captureRightClick, ie, ie_version, ios, mac, mobile, presto, webkit } from "../util/browser.js"
-import { activeElt, removeChildrenAndAdd, selectInput } from "../util/dom.js"
+import { activeElt, getWindow, removeChildrenAndAdd, selectInput } from "../util/dom.js"
 import { e_preventDefault, e_stop, off, on, signalDOMEvent } from "../util/event.js"
 import { hasSelection } from "../util/feature_detection.js"
 import { Delayed, sel_dontScroll } from "../util/misc.js"
@@ -290,9 +290,9 @@ export default class TextareaInput {
       z-index: 1000; background: ${ie ? "rgba(255, 255, 255, .05)" : "transparent"};
       outline: none; border-width: 0; outline: none; overflow: hidden; opacity: .05; filter: alpha(opacity=5);`
     let oldScrollY
-    if (webkit) oldScrollY = window.scrollY // Work around Chrome issue (#2712)
+    if (webkit) oldScrollY = getWindow().scrollY // Work around Chrome issue (#2712)
     display.input.focus()
-    if (webkit) window.scrollTo(null, oldScrollY)
+    if (webkit) getWindow().scrollTo(null, oldScrollY)
     display.input.reset()
     // Adds "Select all" to context menu in FF
     if (!cm.somethingSelected()) te.value = input.prevInput = " "

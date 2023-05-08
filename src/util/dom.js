@@ -95,3 +95,13 @@ if (ios) // Mobile Safari apparently has a bug where select() is broken.
   selectInput = function(node) { node.selectionStart = 0; node.selectionEnd = node.value.length }
 else if (ie) // Suppress mysterious IE10 errors
   selectInput = function(node) { try { node.select() } catch(_e) {} }
+
+export function getWindow() {
+  if (typeof window !== 'undefined') {
+    return window;
+  } else {
+    return {
+      focus: () => null,
+    };
+  }
+}

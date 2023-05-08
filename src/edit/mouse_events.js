@@ -9,7 +9,7 @@ import { normalizeSelection, Range, Selection } from "../model/selection.js"
 import { extendRange, extendSelection, replaceOneSelection, setSelection } from "../model/selection_updates.js"
 import { captureRightClick, chromeOS, ie, ie_version, mac, webkit } from "../util/browser.js"
 import { getOrder, getBidiPartAt } from "../util/bidi.js"
-import { activeElt } from "../util/dom.js"
+import { activeElt, getWindow } from "../util/dom.js"
 import { e_button, e_defaultPrevented, e_preventDefault, e_target, hasHandler, off, on, signal, signalDOMEvent } from "../util/event.js"
 import { dragAndDrop } from "../util/feature_detection.js"
 import { bind, countColumn, findColumn, sel_mouse } from "../util/misc.js"
@@ -73,7 +73,7 @@ export function onMouseDown(e) {
   }
   if (clickInGutter(cm, e)) return
   let pos = posFromMouse(cm, e), button = e_button(e), repeat = pos ? clickRepeat(pos, button) : "single"
-  window.focus()
+  getWindow().focus()
 
   // #3261: make sure, that we're not starting a second selection
   if (button == 1 && cm.state.selectingText)
