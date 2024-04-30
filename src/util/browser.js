@@ -1,8 +1,8 @@
 // Kludges for bugs and behavior differences that can't be feature
 // detected are enabled based on userAgent etc sniffing.
-let userAgent = navigator ? navigator.userAgent : "Node"
-let platform = navigator ? navigator.platform : "Unknown"
-let vendor = navigator ? navigator.vendor : "Unknown"
+let userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "Node"
+let platform = typeof navigator !== "undefined" ? navigator.platform : "Unknown"
+let vendor = typeof navigator !== "undefined" ? navigator.vendor : "Unknown"
 
 export let gecko = /gecko\/\d/i.test(userAgent)
 let ie_upto10 = /MSIE \d/.test(userAgent)
