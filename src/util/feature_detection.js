@@ -2,13 +2,13 @@ import { elt, getWindow, range, removeChildren, removeChildrenAndAdd } from "./d
 import { ie, ie_version } from "./browser.js"
 
 // Detect drag-and-drop
-export let dragAndDrop = function() {
-  // There is *some* kind of drag-and-drop support in IE6-8, but I
-  // couldn't get it to work yet.
-  if (ie && ie_version < 9) return false
-  let div = elt('div')
-  return "draggable" in div || "dragDrop" in div
-}()
+export let dragAndDrop = false;
+if (!(ie && ie_version < 9)) {
+  if (typeof document !== "undefined") {
+    let div = elt('div')
+    dragAndDrop = "draggable" in div || "dragDrop" in div
+  }
+}
 
 let zwspSupported
 export function zeroWidthElement(measure) {
@@ -67,12 +67,16 @@ export let hasSelection = getWindow().getSelection ? te => {
   return range.compareEndPoints("StartToEnd", range) != 0
 }
 
-export let hasCopyEvent = (() => {
+export let hasCopyEvent = false;
+if (typeof document !== "undefined") {
   let e = elt("div")
-  if ("oncopy" in e) return true
-  e.setAttribute("oncopy", "return;")
-  return typeof e.oncopy == "function"
-})()
+  if ("oncopy" in e) {
+    hasCopyEvent = true;
+  } else {
+    e.setAttribute("oncopy", "return;")
+    hasCopyEvent = typeof e.oncopy == "function"
+  }
+}
 
 let badZoomedRects = null
 export function hasBadZoomedRects(measure) {

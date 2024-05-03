@@ -37,7 +37,7 @@ export function eltP(tag, content, className, style) {
 }
 
 export let range
-if (document.createRange) range = function(node, start, end, endNode) {
+if (typeof document !== "undefined" && document.createRange) range = function(node, start, end, endNode) {
   let r = document.createRange()
   r.setEnd(endNode || node, end)
   r.setStart(node, start)
