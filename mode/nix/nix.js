@@ -41,7 +41,8 @@ CodeMirror.defineMode("nix", function(_config, modeConfig) {
       if (ch == '$' && source.eat('{')) {
         return switchState(source, setState, interpolation);
       }
-      return null;
+      // Return punctuation token for braces, parentheses, etc.
+      return "punctuation";
     }
 
     if (ch == '#') {
@@ -138,8 +139,6 @@ CodeMirror.defineMode("nix", function(_config, modeConfig) {
 
     return "error";
   }
-
-  // Nix only has single-line comments, no block comments
 
   // Regular string literals
   function stringLiteral(source, setState) {
@@ -285,15 +284,83 @@ CodeMirror.defineMode("nix", function(_config, modeConfig) {
     return wkw;
   })();
 
+  // Indentation logic for Nix
+  function indent(state, textAfter) {
+    var ctx = state.context;
+    if (ctx && textAfter && textAfter.startsWith("}"))
+      return ctx.indent - _config.indentUnit;
+    return ctx ? ctx.indent : 0;
+  }
+
+  function pushContext(state, indent, type) {
+    state.context = {
+      prev: state.context,
+      indent: indent,
+      type: type
+    };
+  }
+
+  function popContext(state) {
+    state.context = state.context.prev;
+  }
+
   return {
-    startState: function () { return { f: normal }; },
-    copyState:  function (s) { return { f: s.f }; },
+    startState: function () {
+      return {
+        f: normal,
+        context: null,
+        indented: 0,
+        startOfLine: true
+      };
+    },
+    copyState: function (s) {
+      return {
+        f: s.f,
+        context: s.context,
+        indented: s.indented,
+        startOfLine: s.startOfLine
+      };
+    },
 
     token: function(stream, state) {
-      var t = state.f(stream, function(s) { state.f = s; });
-      var w = stream.current();
-      return wellKnownWords.hasOwnProperty(w) ? wellKnownWords[w] : t;
+      if (stream.sol()) {
+        state.startOfLine = true;
+        state.indented = stream.indentation();
+      }
+      if (stream.eatSpace()) return null;
+
+      var style = state.f(stream, function(s) { state.f = s; });
+      var word = stream.current();
+
+      // Update state for indentation
+      if (state.startOfLine) {
+        if (word === "let") {
+          pushContext(state, state.indented + _config.indentUnit, word);
+        } else if (word === "in") {
+          // Dedent after 'in' to match the 'let'
+          while (state.context && state.context.type !== "let")
+            popContext(state);
+          if (state.context && state.context.type === "let")
+            popContext(state);
+        }
+      }
+
+      if (word === "{") {
+        pushContext(state, state.indented + _config.indentUnit, "}");
+      } else if (word === "(") {
+        pushContext(state, state.indented + _config.indentUnit, ")");
+      } else if (word === "[") {
+        pushContext(state, state.indented + _config.indentUnit, "]");
+      } else if (word === "}" || word === ")" || word === "]") {
+        if (state.context && word === state.context.type)
+          popContext(state);
+      }
+
+      state.startOfLine = false;
+      return wellKnownWords.hasOwnProperty(word) ? wellKnownWords[word] : style;
     },
+
+    indent: indent,
 
     // Nix has no block comments
     lineComment: "#"
