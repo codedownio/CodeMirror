@@ -1,0 +1,114 @@
+<!doctype html>
+
+<title>CodeMirror: Typst mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel=stylesheet href=../../lib/codemirror.css>
+<script src=../../lib/codemirror.js></script>
+<script src=typst.js></script>
+<style type=text/css>
+  .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+  .cm-header {text-decoration: underline; font-weight: bold !important;}
+  span.cm-header {text-decoration: underline; font-weight: bold !important;}
+  .CodeMirror .cm-header {text-decoration: underline; font-weight: bold !important;}
+</style>
+<div id=nav>
+  <a href="https://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Typst</a>
+  </ul>
+</div>
+
+<article>
+  <h2>Typst mode</h2>
+
+  <textarea id="typstCode">
+= Introduction
+
+This is a *Typst* document demonstrating _various_ syntax features.
+
+// This is a line comment
+/* This is a
+   block comment */
+
+== Code Examples
+
+#let name = "World"
+#let greeting = "Hello " + name
+
+#if true {
+  [The greeting is: #greeting]
+}
+
+#for i in range(3) {
+  [Item #(i + 1)]
+}
+
+== Math Mode
+
+The quadratic formula is $ x = (-b plus.minus sqrt(b^2 - 4a c)) / (2a) $.
+
+For display math:
+$ sum_(i=1)^n i = (n(n+1))/2 $
+
+== Lists and Formatting
+
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+
++ Numbered list
++ Second numbered item
+
+== Raw Text and Code
+
+Here's some `inline code` and a code block:
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+== Functions and Variables
+
+#let square(x) = x * x
+#let result = square(5)
+
+The result is #result.
+
+== Advanced Features
+
+#import "template.typ": *
+#include "content.typ"
+
+#let data = (
+  name: "Alice",
+  age: 30,
+  city: "New York"
+)
+
+#for (key, value) in data {
+  [#key: #value]
+}
+  </textarea>
+
+  <script>
+   var typstEditor = CodeMirror.fromTextArea(document.getElementById('typstCode'), {
+     mode: 'text/x-typst',
+     lineNumbers: true,
+     matchBrackets: true
+   });
+  </script>
+
+  <p><strong>MIME types defined:</strong> <code>text/x-typst</code> (Typst).</p>
+</article>
