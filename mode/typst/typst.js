@@ -20,7 +20,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
   var hexitRE = /[0-9A-Fa-f]/;
   var idRE = /[a-z_A-Z0-9\-]/;
   var operatorRE = /[+\-*\/=<>!&|]/;
-  var specialRE = /[(),;[\]`]/;
+  var specialRE = /[,;[\]`]/;
   var whiteCharRE = /[ \t\v\f]/;
 
   // Keywords
@@ -34,6 +34,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
     "continue": "keyword",
     "import": "keyword",
     "include": "keyword",
+    "show": "keyword",
     "as": "keyword",
     "in": "keyword",
     "not": "keyword",
@@ -50,10 +51,12 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
       return {
         inCode: false,
         braceDepth: 0,
+        parenDepth: 0,
         inBlockComment: false,
         inEmphasis: false,
         inStrong: false,
-        inHeading: false
+        inHeading: false,
+        inString: false
       };
     },
 
@@ -61,15 +64,32 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
       return {
         inCode: s.inCode,
         braceDepth: s.braceDepth,
+        parenDepth: s.parenDepth,
         inBlockComment: s.inBlockComment,
         inEmphasis: s.inEmphasis,
         inStrong: s.inStrong,
-        inHeading: s.inHeading
+        inHeading: s.inHeading,
+        inString: s.inString
       };
     },
 
     token: function(stream, state) {
-      // Handle block comments first
+      // Handle strings first
+      if (state.inString) {
+        while (!stream.eol()) {
+          var ch = stream.next();
+          if (ch === '"') {
+            state.inString = false;
+            break;
+          }
+          if (ch === '\\') {
+            stream.next(); // Skip escaped character
+          }
+        }
+        return "string";
+      }
+
+      // Handle block comments
       if (state.inBlockComment) {
         while (!stream.eol()) {
           if (stream.next() === '*' && stream.eat('/')) {
@@ -80,8 +100,8 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
         return "comment";
       }
 
-      // At start of line, reset to markup mode unless we're in braces
-      if (stream.sol() && state.braceDepth === 0) {
+      // At start of line, reset to markup mode unless we're in braces or parens
+      if (stream.sol() && state.braceDepth === 0 && state.parenDepth === 0) {
         state.inCode = false;
         state.inHeading = false;
       }
@@ -93,14 +113,25 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
 
       var ch = stream.next();
 
-      // Handle braces for tracking depth
+      // Handle braces and parentheses for tracking depth
       if (ch === '{') {
         state.braceDepth++;
         return "punctuation";
       }
       if (ch === '}') {
         state.braceDepth--;
-        if (state.braceDepth === 0) {
+        if (state.braceDepth === 0 && state.parenDepth === 0) {
+          state.inCode = false;
+        }
+        return "punctuation";
+      }
+      if (ch === '(') {
+        state.parenDepth++;
+        return "punctuation";
+      }
+      if (ch === ')') {
+        state.parenDepth--;
+        if (state.braceDepth === 0 && state.parenDepth === 0) {
           state.inCode = false;
         }
         return "punctuation";
@@ -151,10 +182,16 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
       if (state.inCode) {
         // Strings
         if (ch === '"') {
+          state.inString = true;
           while (!stream.eol()) {
             var next = stream.next();
-            if (next === '"') break;
-            if (next === '\\') stream.next();
+            if (next === '"') {
+              state.inString = false;
+              break;
+            }
+            if (next === '\\') {
+              stream.next(); // Skip escaped character
+            }
           }
           return "string";
         }
@@ -232,7 +269,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
 
         // Handle emphasis states
         if (state.inStrong) {
-          if (ch === '*' && stream.eat('*')) {
+          if (ch === '*') {
             state.inStrong = false;
             return "strong";
           }
@@ -240,7 +277,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
         }
 
         if (state.inEmphasis) {
-          if (ch === '*' || ch === '_') {
+          if (ch === '_') {
             state.inEmphasis = false;
             return "em";
           }
@@ -249,12 +286,8 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
 
         // Strong emphasis
         if (ch === '*') {
-          if (stream.eat('*')) {
-            state.inStrong = true;
-            return "strong";
-          }
-          state.inEmphasis = true;
-          return "em";
+          state.inStrong = true;
+          return "strong";
         }
 
         // Emphasis
