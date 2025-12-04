@@ -46,6 +46,16 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
     "false": "atom"
   };
 
+  function getHeaderStyles(state) {
+    var styles = [];
+
+    if (state.header) {
+      styles.push("header", "header-" + state.header);
+    }
+
+    return styles.length ? styles.join(' ') : null;
+  }
+
   return {
     startState: function() {
       return {
@@ -55,7 +65,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
         inBlockComment: false,
         inEmphasis: false,
         inStrong: false,
-        inHeading: false,
+        header: 0,
         inString: false
       };
     },
@@ -68,7 +78,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
         inBlockComment: s.inBlockComment,
         inEmphasis: s.inEmphasis,
         inStrong: s.inStrong,
-        inHeading: s.inHeading,
+        header: s.header,
         inString: s.inString
       };
     },
@@ -103,7 +113,16 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
       // At start of line, reset to markup mode unless we're in braces or parens
       if (stream.sol() && state.braceDepth === 0 && state.parenDepth === 0) {
         state.inCode = false;
-        state.inHeading = false;
+        state.header = 0;
+      }
+
+      // Check for headers at start of line
+      if (stream.sol() && state.braceDepth === 0 && state.parenDepth === 0) {
+        var match = stream.match(/^(=+)\s*/);
+        if (match) {
+          state.header = match[1].length;
+          return getHeaderStyles(state);
+        }
       }
 
       // Skip whitespace
@@ -254,9 +273,9 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
 
       // Markup mode
       else {
-        // If we're in a heading, style everything as header
-        if (state.inHeading) {
-          return "header";
+        // If we're in a heading, style everything as header with level
+        if (state.header) {
+          return getHeaderStyles(state);
         }
 
         // Raw text
@@ -296,15 +315,6 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
           return "em";
         }
 
-        // Headings - back up and use stream.match
-        if (ch === '=' && stream.sol()) {
-          stream.backUp(1);
-          var match = stream.match(/^(=+)\s*/);
-          if (match) {
-            state.inHeading = true;
-            return "header";
-          }
-        }
 
         // Lists
         if ((ch === '-' || ch === '+') && stream.sol()) {
