@@ -31,9 +31,9 @@
   }
 
   CodeMirror.requireMode = function(mode, cont) {
-    var modeUrl = CodeMirror.modeURL;
+    var modeURL = CodeMirror.modeURL;
     if (typeof mode != "string") {
-      if (mode.url) modeUrl = mode.url;
+      if (mode.url) modeURL = mode.url;
       mode = mode.name;
     };
     if (CodeMirror.modes.hasOwnProperty(mode)) {
