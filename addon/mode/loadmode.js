@@ -31,13 +31,17 @@
   }
 
   CodeMirror.requireMode = function(mode, cont) {
-    if (typeof mode != "string") mode = mode.name;
+    var modeUrl = CodeMirror.modeURL;
+    if (typeof mode != "string") {
+      if (mode.url) modeUrl = mode.url;
+      mode = mode.name;
+    };
     if (CodeMirror.modes.hasOwnProperty(mode)) {
       if (!CodeMirror.modes[mode].isDummyMode) return ensureDeps(mode, cont);
     }
     if (loading.hasOwnProperty(mode)) return loading[mode].push(cont);
 
-    var file = CodeMirror.modeURL.replace(/%N/g, mode);
+    var file = modeURL.replace(/%N/g, mode);
 
     // Just use the "plain" behavior always
     // TODO: find a reasonable way to bundle all the modes with webpack

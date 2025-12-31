@@ -1,6 +1,6 @@
 {
   "name": "@codedown/codemirror",
-  "version": "5.48.14",
+  "version": "5.48.15",
   "main": "lib/codemirror.js",
   "style": "lib/codemirror.css",
   "author": {
