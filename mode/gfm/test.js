@@ -15,8 +15,8 @@
      "[comment&formatting&formatting-code ``][comment foo ` bar][comment&formatting&formatting-code ``]");
 
   FT("taskList",
-     "[variable-2&formatting&formatting-list&formatting-list-ul - ][meta&formatting&formatting-task [ ]]][variable-2  foo]",
-     "[variable-2&formatting&formatting-list&formatting-list-ul - ][property&formatting&formatting-task [x]]][variable-2  foo]");
+     "[list1&formatting&formatting-list&formatting-list-ul - ][meta&formatting&formatting-task [ ]]][list1  foo]",
+     "[list1&formatting&formatting-list&formatting-list-ul - ][property&formatting&formatting-task [x]]][list1  foo]");
 
   FT("formatting_strikethrough",
      "[strikethrough&formatting&formatting-strikethrough ~~][strikethrough foo][strikethrough&formatting&formatting-strikethrough ~~]");
@@ -37,29 +37,29 @@
      "[em&strong ___foo___] bar");
 
   MT("taskListAsterisk",
-     "[variable-2 * ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
-     "[variable-2 * ][link&variable-2 [[ ]]][variable-2 bar]", // Invalid; must have space after ]
-     "[variable-2 * ][link&variable-2 [[x]]][variable-2 hello]", // Invalid; must have space after ]
-     "[variable-2 * ][meta [ ]]][variable-2  ][link&variable-2 [[world]]]", // Valid; tests reference style links
-     "    [variable-3 * ][property [x]]][variable-3  foo]"); // Valid; can be nested
+     "[list1 * ][link&list1 [[]]][list1 foo]", // Invalid; must have space or x between []
+     "[list1 * ][link&list1 [[ ]]][list1 bar]", // Invalid; must have space after ]
+     "[list1 * ][link&list1 [[x]]][list1 hello]", // Invalid; must have space after ]
+     "[list1 * ][meta [ ]]][list1  ][link&list1 [[world]]]", // Valid; tests reference style links
+     "    [list2 * ][property [x]]][list2  foo]"); // Valid; can be nested
 
   MT("taskListPlus",
-     "[variable-2 + ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
-     "[variable-2 + ][link&variable-2 [[x]]][variable-2 hello]", // Invalid; must have space after ]
-     "[variable-2 + ][meta [ ]]][variable-2  ][link&variable-2 [[world]]]", // Valid; tests reference style links
-     "    [variable-3 + ][property [x]]][variable-3  foo]"); // Valid; can be nested
+     "[list1 + ][link&list1 [[]]][list1 foo]", // Invalid; must have space or x between []
+     "[list1 + ][link&list1 [[x]]][list1 hello]", // Invalid; must have space after ]
+     "[list1 + ][meta [ ]]][list1  ][link&list1 [[world]]]", // Valid; tests reference style links
+     "    [list2 + ][property [x]]][list2  foo]"); // Valid; can be nested
 
   MT("taskListDash",
-     "[variable-2 - ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
-     "[variable-2 - ][link&variable-2 [[x]]][variable-2 hello]", // Invalid; must have space after ]
-     "[variable-2 - ][meta [ ]]][variable-2  world]", // Valid; tests reference style links
-     "    [variable-3 - ][property [x]]][variable-3  foo]"); // Valid; can be nested
+     "[list1 - ][link&list1 [[]]][list1 foo]", // Invalid; must have space or x between []
+     "[list1 - ][link&list1 [[x]]][list1 hello]", // Invalid; must have space after ]
+     "[list1 - ][meta [ ]]][list1  world]", // Valid; tests reference style links
+     "    [list2 - ][property [x]]][list2  foo]"); // Valid; can be nested
 
   MT("taskListNumber",
-     "[variable-2 1. ][link&variable-2 [[]]][variable-2 foo]", // Invalid; must have space or x between []
-     "[variable-2 2. ][link&variable-2 [[ ]]][variable-2 bar]", // Invalid; must have space after ]
-     "[variable-2 3. ][meta [ ]]][variable-2  world]", // Valid; tests reference style links
-     "    [variable-3 1. ][property [x]]][variable-3  foo]"); // Valid; can be nested
+     "[list1 1. ][link&list1 [[]]][list1 foo]", // Invalid; must have space or x between []
+     "[list1 2. ][link&list1 [[ ]]][list1 bar]", // Invalid; must have space after ]
+     "[list1 3. ][meta [ ]]][list1  world]", // Valid; tests reference style links
+     "    [list2 1. ][property [x]]][list2  foo]"); // Valid; can be nested
 
   MT("SHA",
      "foo [link be6a8cc1c1ecfe9489fb51e4869af15a13fc2cd2] bar");

@@ -78,9 +78,9 @@
      "[quote&quote-1&formatting&formatting-quote&formatting-quote-1 > ][quote&quote-1 foo]");
 
   FT("formatting_list",
-     "[variable-2&formatting&formatting-list&formatting-list-ul - ][variable-2 foo]");
+     "[list1&formatting&formatting-list&formatting-list-ul - ][list1 foo]");
   FT("formatting_list",
-     "[variable-2&formatting&formatting-list&formatting-list-ol 1. ][variable-2 foo]");
+     "[list1&formatting&formatting-list&formatting-list-ol 1. ][list1 foo]");
 
   FT("formatting_link",
      "[link&formatting&formatting-link [][link foo][link&formatting&formatting-link ]]][string&formatting&formatting-link-string&url (][string&url http://example.com/][string&formatting&formatting-link-string&url )]");
@@ -328,23 +328,23 @@
      "[hr ---]");
 
   MT("noSetextAfterList",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "[hr ---]");
 
   MT("noSetextAfterList_listContinuation",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "bar",
      "[hr ---]");
 
   MT("setextAfterList_afterIndentedCode",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "",
      "      [comment bar]",
      "[header&header-2 baz]",
      "[header&header-2 ---]");
 
   MT("setextAfterList_afterFencedCodeBlocks",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "",
      "      [comment ```]",
      "      [comment bar]",
@@ -353,13 +353,13 @@
      "[header&header-2 ---]");
 
   MT("setextAfterList_afterHeader",
-     "[variable-2 - foo]",
-     "  [variable-2&header&header-1 # bar]",
+     "[list1 - foo]",
+     "  [list1&header&header-1 # bar]",
      "[header&header-2 baz]",
      "[header&header-2 ---]");
 
   MT("setextAfterList_afterHr",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "",
      "  [hr ---]",
      "[header&header-2 bar]",
@@ -472,48 +472,48 @@
      "foo",
      "bar",
      "",
-     "[variable-2 * foo]",
-     "[variable-2 * bar]");
+     "[list1 * foo]",
+     "[list1 * bar]");
 
   MT("listPlus",
      "foo",
      "bar",
      "",
-     "[variable-2 + foo]",
-     "[variable-2 + bar]");
+     "[list1 + foo]",
+     "[list1 + bar]");
 
   MT("listDash",
      "foo",
      "bar",
      "",
-     "[variable-2 - foo]",
-     "[variable-2 - bar]");
+     "[list1 - foo]",
+     "[list1 - bar]");
 
   MT("listNumber",
      "foo",
      "bar",
      "",
-     "[variable-2 1. foo]",
-     "[variable-2 2. bar]");
+     "[list1 1. foo]",
+     "[list1 2. bar]");
 
   MT("listFromParagraph",
      "foo",
-     "[variable-2 1. bar]",
-     "[variable-2 2. hello]");
+     "[list1 1. bar]",
+     "[list1 2. hello]");
 
   // List after hr
   MT("listAfterHr",
      "[hr ---]",
-     "[variable-2 - bar]");
+     "[list1 - bar]");
 
   // List after header
   MT("listAfterHeader",
      "[header&header-1 # foo]",
-     "[variable-2 - bar]");
+     "[list1 - bar]");
 
   // hr after list
   MT("hrAfterList",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "[hr -----]");
 
   MT("hrAfterFencedCode",
@@ -525,7 +525,7 @@
   // allow hr inside lists
   // (require prev line to be empty or hr, TODO: non-CommonMark-compliant)
   MT("hrInsideList",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "",
      "  [hr ---]",
      "     [hr ---]",
@@ -539,130 +539,130 @@
 
   // Formatting in lists (*)
   MT("listAsteriskFormatting",
-     "[variable-2 * ][variable-2&em *foo*][variable-2  bar]",
-     "[variable-2 * ][variable-2&strong **foo**][variable-2  bar]",
-     "[variable-2 * ][variable-2&em&strong ***foo***][variable-2  bar]",
-     "[variable-2 * ][variable-2&comment `foo`][variable-2  bar]");
+     "[list1 * ][list1&em *foo*][list1  bar]",
+     "[list1 * ][list1&strong **foo**][list1  bar]",
+     "[list1 * ][list1&em&strong ***foo***][list1  bar]",
+     "[list1 * ][list1&comment `foo`][list1  bar]");
 
   // Formatting in lists (+)
   MT("listPlusFormatting",
-     "[variable-2 + ][variable-2&em *foo*][variable-2  bar]",
-     "[variable-2 + ][variable-2&strong **foo**][variable-2  bar]",
-     "[variable-2 + ][variable-2&em&strong ***foo***][variable-2  bar]",
-     "[variable-2 + ][variable-2&comment `foo`][variable-2  bar]");
+     "[list1 + ][list1&em *foo*][list1  bar]",
+     "[list1 + ][list1&strong **foo**][list1  bar]",
+     "[list1 + ][list1&em&strong ***foo***][list1  bar]",
+     "[list1 + ][list1&comment `foo`][list1  bar]");
 
   // Formatting in lists (-)
   MT("listDashFormatting",
-     "[variable-2 - ][variable-2&em *foo*][variable-2  bar]",
-     "[variable-2 - ][variable-2&strong **foo**][variable-2  bar]",
-     "[variable-2 - ][variable-2&em&strong ***foo***][variable-2  bar]",
-     "[variable-2 - ][variable-2&comment `foo`][variable-2  bar]");
+     "[list1 - ][list1&em *foo*][list1  bar]",
+     "[list1 - ][list1&strong **foo**][list1  bar]",
+     "[list1 - ][list1&em&strong ***foo***][list1  bar]",
+     "[list1 - ][list1&comment `foo`][list1  bar]");
 
   // Formatting in lists (1.)
   MT("listNumberFormatting",
-     "[variable-2 1. ][variable-2&em *foo*][variable-2  bar]",
-     "[variable-2 2. ][variable-2&strong **foo**][variable-2  bar]",
-     "[variable-2 3. ][variable-2&em&strong ***foo***][variable-2  bar]",
-     "[variable-2 4. ][variable-2&comment `foo`][variable-2  bar]");
+     "[list1 1. ][list1&em *foo*][list1  bar]",
+     "[list1 2. ][list1&strong **foo**][list1  bar]",
+     "[list1 3. ][list1&em&strong ***foo***][list1  bar]",
+     "[list1 4. ][list1&comment `foo`][list1  bar]");
 
   // Paragraph lists
   MT("listParagraph",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]");
+     "[list1 * bar]");
 
   // Multi-paragraph lists
   //
   // 4 spaces
   MT("listMultiParagraph",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
-     "    [variable-2 hello]");
+     "    [list1 hello]");
 
   // 4 spaces, extra blank lines (should still be list, per Dingus)
   MT("listMultiParagraphExtra",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
      "",
-     "    [variable-2 hello]");
+     "    [list1 hello]");
 
   // 4 spaces, plus 1 space (should still be list, per Dingus)
   MT("listMultiParagraphExtraSpace",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
-     "     [variable-2 hello]",
+     "     [list1 hello]",
      "",
-     "    [variable-2 world]");
+     "    [list1 world]");
 
   // 1 tab
   MT("listTab",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
-     "\t[variable-2 hello]");
+     "\t[list1 hello]");
 
   // No indent
   MT("listNoIndent",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
      "hello");
 
   MT("listCommonMarkIndentationCode",
-     "[variable-2 * Code blocks also affect]",
-     "  [variable-3 * The next level starts where the contents start.]",
-     "   [variable-3 *    Anything less than that will keep the item on the same level.]",
-     "       [variable-3 * Each list item can indent the first level further and further.]",
-     "  [variable-3 * For the most part, this makes sense while writing a list.]",
-     "    [keyword * This means two items with same indentation can be different levels.]",
-     "     [keyword *  Each level has an indent requirement that can change between items.]",
-     "       [keyword * A list item that meets this will be part of the next level.]",
-     "   [variable-3 * Otherwise, it will be part of the level where it does meet this.]",
-     " [variable-2 * World]");
+     "[list1 * Code blocks also affect]",
+     "  [list2 * The next level starts where the contents start.]",
+     "   [list2 *    Anything less than that will keep the item on the same level.]",
+     "       [list2 * Each list item can indent the first level further and further.]",
+     "  [list2 * For the most part, this makes sense while writing a list.]",
+     "    [list3 * This means two items with same indentation can be different levels.]",
+     "     [list3 *  Each level has an indent requirement that can change between items.]",
+     "       [list3 * A list item that meets this will be part of the next level.]",
+     "   [list2 * Otherwise, it will be part of the level where it does meet this.]",
+     " [list1 * World]");
 
   // should handle nested and un-nested lists
   MT("listCommonMark_MixedIndents",
-     "[variable-2 * list1]",
-     "    [variable-2 list1]",
-     "  [variable-2&header&header-1 # heading still part of list1]",
-     "  [variable-2 text after heading still part of list1]",
+     "[list1 * list1]",
+     "    [list1 list1]",
+     "  [list1&header&header-1 # heading still part of list1]",
+     "  [list1 text after heading still part of list1]",
      "",
      "      [comment indented codeblock]",
-     "  [variable-2 list1 after code block]",
-     "  [variable-3 * list2]",
+     "  [list1 list1 after code block]",
+     "  [list2 * list2]",
      // amount of spaces on empty lines between lists doesn't matter
      "              ",
      // extra empty lines irrelevant
      "",
      "",
-     "    [variable-3 indented text part of list2]",
-     "    [keyword * list3]",
+     "    [list2 indented text part of list2]",
+     "    [list3 * list3]",
      "",
-     "    [variable-3 text at level of list2]",
+     "    [list2 text at level of list2]",
      "",
-     "  [variable-2 de-indented text part of list1 again]",
+     "  [list1 de-indented text part of list1 again]",
      "",
-     "  [variable-2&comment ```]",
+     "  [list1&comment ```]",
      "  [comment code]",
-     "  [variable-2&comment ```]",
+     "  [list1&comment ```]",
      "",
-     "  [variable-2 text after fenced code]");
+     "  [list1 text after fenced code]");
 
   // should correctly parse numbered list content indentation
   MT("listCommonMark_NumeberedListIndent",
-     "[variable-2 1000. list with base indent of 6]",
+     "[list1 1000. list with base indent of 6]",
      "",
-     "      [variable-2 text must be indented 6 spaces at minimum]",
+     "      [list1 text must be indented 6 spaces at minimum]",
      "",
-     "         [variable-2 9-spaces indented text still part of list]",
+     "         [list1 9-spaces indented text still part of list]",
      "",
      "          [comment indented codeblock starts at 10 spaces]",
      "",
@@ -670,19 +670,19 @@
 
   // should consider tab as 4 spaces
   MT("listCommonMark_TabIndented",
-     "[variable-2 * list]",
-     "\t[variable-3 * list2]",
+     "[list1 * list]",
+     "\t[list2 * list2]",
      "",
-     "\t\t[variable-3 part of list2]");
+     "\t\t[list2 part of list2]");
 
   MT("listAfterBlockquote",
      "[quote&quote-1 > foo]",
-     "[variable-2 - bar]");
+     "[list1 - bar]");
 
   // shouldn't create sublist if it's indented more than allowed
   MT("nestedListIndentedTooMuch",
-     "[variable-2 - foo]",
-     "          [variable-2 - bar]");
+     "[list1 - foo]",
+     "          [list1 - bar]");
 
   MT("listIndentedTooMuchAfterParagraph",
      "foo",
@@ -690,106 +690,106 @@
 
   // Blockquote
   MT("blockquote",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
-     "    [variable-2&quote&quote-1 > hello]");
+     "    [list1&quote&quote-1 > hello]");
 
   // Code block
   MT("blockquoteCode",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "[variable-2 * bar]",
+     "[list1 * bar]",
      "",
      "        [comment > hello]",
      "",
-     "    [variable-2 world]");
+     "    [list1 world]");
 
   // Code block followed by text
   MT("blockquoteCodeText",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "    [variable-2 bar]",
+     "    [list1 bar]",
      "",
      "        [comment hello]",
      "",
-     "    [variable-2 world]");
+     "    [list1 world]");
 
   // Nested list
 
   MT("listAsteriskNested",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "    [variable-3 * bar]");
+     "    [list2 * bar]");
 
   MT("listPlusNested",
-     "[variable-2 + foo]",
+     "[list1 + foo]",
      "",
-     "    [variable-3 + bar]");
+     "    [list2 + bar]");
 
   MT("listDashNested",
-     "[variable-2 - foo]",
+     "[list1 - foo]",
      "",
-     "    [variable-3 - bar]");
+     "    [list2 - bar]");
 
   MT("listNumberNested",
-     "[variable-2 1. foo]",
+     "[list1 1. foo]",
      "",
-     "    [variable-3 2. bar]");
+     "    [list2 2. bar]");
 
   MT("listMixed",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "    [variable-3 + bar]",
+     "    [list2 + bar]",
      "",
-     "        [keyword - hello]",
+     "        [list3 - hello]",
      "",
-     "            [variable-2 1. world]");
+     "            [list1 1. world]");
 
   MT("listBlockquote",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "    [variable-3 + bar]",
+     "    [list2 + bar]",
      "",
-     "        [quote&quote-1&variable-3 > hello]");
+     "        [quote&quote-1&list2 > hello]");
 
   MT("listCode",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
-     "    [variable-3 + bar]",
+     "    [list2 + bar]",
      "",
      "            [comment hello]");
 
   // Code with internal indentation
   MT("listCodeIndentation",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
      "        [comment bar]",
      "            [comment hello]",
      "                [comment world]",
      "        [comment foo]",
-     "    [variable-2 bar]");
+     "    [list1 bar]");
 
   // List nesting edge cases
   MT("listNested",
-    "[variable-2 * foo]",
+    "[list1 * foo]",
     "",
-    "    [variable-3 * bar]",
+    "    [list2 * bar]",
     "",
-    "       [variable-3 hello]"
+    "       [list2 hello]"
   );
   MT("listNested",
-    "[variable-2 * foo]",
+    "[list1 * foo]",
     "",
-    "    [variable-3 * bar]",
+    "    [list2 * bar]",
     "",
-    "      [keyword * foo]"
+    "      [list3 * foo]"
   );
 
   // Code followed by text
   MT("listCodeText",
-     "[variable-2 * foo]",
+     "[list1 * foo]",
      "",
      "        [comment bar]",
      "",
@@ -1147,7 +1147,7 @@
   // Tests to make sure GFM-specific things aren't getting through
 
   MT("taskList",
-     "[variable-2 * ][link&variable-2 [[ ]]][variable-2 bar]");
+     "[list1 * ][link&list1 [[ ]]][list1 bar]");
 
   MT("fencedCodeBlocks",
      "[comment ```]",
@@ -1177,15 +1177,15 @@
      "baz");
 
   MT("fencedCodeBlocksInList_closingFenceIndented",
-     "[variable-2 - list]",
-     "    [variable-2&comment ```]",
+     "[list1 - list]",
+     "    [list1&comment ```]",
      "    [comment foo]",
-     "     [variable-2&comment ```]",
-     "    [variable-2 baz]");
+     "     [list1&comment ```]",
+     "    [list1 baz]");
 
   MT("fencedCodeBlocksInList_closingFenceIndentedTooMuch",
-     "[variable-2 - list]",
-     "    [variable-2&comment ```]",
+     "[list1 - list]",
+     "    [list1&comment ```]",
      "    [comment foo]",
      "      [comment ```]",
      "    [comment baz]");
@@ -1258,12 +1258,12 @@
      "    [comment ```]");
 
   MT("autoTerminateFencedCodeWhenLeavingList",
-     "[variable-2 - list1]",
-     "  [variable-3 - list2]",
-     "    [variable-3&comment ```]",
+     "[list1 - list1]",
+     "  [list2 - list2]",
+     "    [list2&comment ```]",
      "    [comment code]",
-     "  [variable-3 - list2]",
-     "  [variable-2&comment ```]",
+     "  [list2 - list2]",
+     "  [list1&comment ```]",
      "  [comment code]",
      "[quote&quote-1 > foo]");
 

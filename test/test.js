@@ -2209,9 +2209,9 @@ testCM("lineStyleFromMode", function(cm) {
 
   is(byClassName(cm.getWrapperElement(), "bg").length > 0);
   is(byClassName(cm.getWrapperElement(), "line").length > 0);
-  var spanElts = byClassName(cm.getWrapperElement(), "cm-span");
+  var spanElts = byClassName(cm.getWrapperElement(), "span");
   eq(spanElts.length, 2);
-  is(/^\s*cm-span\s*$/.test(spanElts[0].className));
+  is(/^\s*span\s*$/.test(spanElts[0].className));
 }, {value: "line1: [br] [br]\nline2: (par) (par)\nline3: <tag> <tag>"});
 
 testCM("lineStyleFromBlankLine", function(cm) {
@@ -2350,7 +2350,7 @@ testCM("getTokenTypeAt", function(cm) {
       else stream.next();
     }
   });
-  eq(byClassName(cm.getWrapperElement(), "cm-foo").length, 1);
+  eq(byClassName(cm.getWrapperElement(), "foo").length, 1);
   eq(cm.getTokenTypeAt(Pos(0, 6)), "string");
 }, {value: "1 + 'foo'", mode: "javascript"});
 
@@ -2362,11 +2362,11 @@ testCM("addOverlay", function(cm) {
       stream.next()
     }
   })
-  var x = byClassName(cm.getWrapperElement(), "cm-x")
+  var x = byClassName(cm.getWrapperElement(), "x")
   is(x.length, 1)
   is(x[0].textContent, "233")
   cm.replaceRange("", Pos(0, 4), Pos(0, 6))
-  is(byClassName(cm.getWrapperElement(), "cm-x").length, 2)
+  is(byClassName(cm.getWrapperElement(), "x").length, 2)
 }, {value: "foo /* 100 */\nbar + 233;\nbaz", mode: "javascript"})
 
 testCM("resizeLineWidget", function(cm) {
