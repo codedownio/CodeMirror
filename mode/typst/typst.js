@@ -12,7 +12,7 @@
 })(function(CodeMirror) {
 "use strict";
 
-CodeMirror.defineMode("typst", function(config, modeConfig) {
+CodeMirror.defineMode("typst", function(config) {
 
   var smallRE = /[a-z_]/;
   var largeRE = /[A-Z]/;
@@ -21,7 +21,6 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
   var idRE = /[a-z_A-Z0-9\-]/;
   var operatorRE = /[+\-*\/=<>!&|]/;
   var specialRE = /[,;[\]`]/;
-  var whiteCharRE = /[ \t\v\f]/;
 
   // Keywords
   var keywords = {
@@ -345,7 +344,9 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
       }
     },
 
-    indent: function(state, textAfter) {
+    indent: function(state) {
+      // Leave the indentation of continued block comment lines untouched.
+      if (state.inBlockComment) return CodeMirror.Pass;
       return state.braceDepth * config.indentUnit;
     },
 
