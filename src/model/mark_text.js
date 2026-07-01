@@ -84,7 +84,7 @@ export class TextMarker {
 
     // If the signalImmediately flag is true, signal now
     if (signalImmediately && hasHandler(this, "clear") && found) {
-      signal(this, "clear", found.from, found.to);
+      signal(this, "clear", found.from, found.to)
     };
 
     if (cm) signalLater(cm, "markerCleared", cm, this, min, max)

@@ -72,7 +72,7 @@ Doc.prototype = createObj(BranchChunk.prototype, {
     return lines.join(lineSep || this.lineSeparator())
   },
   setValue: docMethodOp(function(code, otherOrigin) {
-    var origin = otherOrigin || "setValue";
+    var origin = otherOrigin || "setValue"
 
     let top = Pos(this.first, 0), last = this.first + this.size - 1
     makeChange(this, {from: top, to: Pos(last, getLine(this, last).text.length),

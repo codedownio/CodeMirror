@@ -8,7 +8,7 @@
     define(["../../lib/codemirror"], function(CM) { mod(CM, "amd"); });
   else // Plain browser env
     mod(CodeMirror, "plain");
-})(function(CodeMirror, env) {
+})(function(CodeMirror) {
   if (!CodeMirror.modeURL) CodeMirror.modeURL = "../mode/%N/%N.js";
 
   var loading = {};

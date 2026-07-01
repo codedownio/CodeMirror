@@ -98,10 +98,10 @@ else if (ie) // Suppress mysterious IE10 errors
 
 export function getWindow() {
   if (typeof window !== 'undefined') {
-    return window;
+    return window
   } else {
     return {
       focus: () => null,
-    };
+    }
   }
 }

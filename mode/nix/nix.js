@@ -170,7 +170,6 @@ CodeMirror.defineMode("nix", function(_config, modeConfig) {
 
   // Multi-line string literals in Nix with ''
   function multiStringLiteral(source, setState) {
-    var triple = false;
     while (!source.eol()) {
       var ch = source.next();
       if (ch == '\'' && source.eat('\'')) {

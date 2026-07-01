@@ -1,5 +1,5 @@
 import { Pos } from "../line/pos.js"
-import { charCoords, cursorCoords, displayWidth, paddingH, wrappedLineExtentChar } from "../measurement/position_measurement.js"
+import { charCoords, cursorCoords, paddingH, wrappedLineExtentChar } from "../measurement/position_measurement.js"
 import { elt } from "../util/dom.js"
 import { getLine } from "../line/utils_line.js"
 import { getOrder, iterateBidiSections } from "../util/bidi.js"
@@ -54,7 +54,7 @@ function drawSelectionRange(cm, range, output) {
   let fragment = document.createDocumentFragment()
   let padding = paddingH(cm.display), leftSide = padding.left
 
-  let rightSide = display.lineDiv.offsetWidth - padding.right;
+  let rightSide = display.lineDiv.offsetWidth - padding.right
   let docLTR = doc.direction == "ltr"
 
   function isCodeBlockLineObj(obj) { return obj.wrapClass && (obj.wrapClass.split(" ").indexOf("codeblock") !== -1); }
@@ -97,14 +97,14 @@ function drawSelectionRange(cm, range, output) {
         let openRight = (docLTR ? openEnd : openStart) && last
         let left = openLeft ? leftSide : (ltr ? fromPos : toPos).left
         let right = openRight ? rightSide : (ltr ? toPos : fromPos).right
-        let widthAdjust = (openRight && isCodeBlockLine) ? (-4) : 0;
+        let widthAdjust = (openRight && isCodeBlockLine) ? (-4) : 0
         add(left, fromPos.top, right - left + widthAdjust, fromPos.bottom)
       } else { // Multiple lines
         let topLeft, topRight, botLeft, botRight
 
-        let widthAdjust = isCodeBlockLine ? 4 : 0;
-        let leftSideToUse = leftSide + widthAdjust;
-        let rightSideToUse = rightSide - widthAdjust;
+        let widthAdjust = isCodeBlockLine ? 4 : 0
+        let leftSideToUse = leftSide + widthAdjust
+        let rightSideToUse = rightSide - widthAdjust
 
         if (ltr) {
           topLeft = (docLTR && openStart && first ? leftSideToUse : fromPos.left)
@@ -147,10 +147,9 @@ function drawSelectionRange(cm, range, output) {
       }
     }
     if (leftEnd.bottom < rightStart.top) {
-      let curTop = leftEnd.bottom;
+      let curTop = leftEnd.bottom
       for (let i = sFrom.line + 1; i < sTo.line; i += 1) {
-        let start = i
-        let currentValue = isCodeBlockLineObj(getLine(doc, i));
+        let currentValue = isCodeBlockLineObj(getLine(doc, i))
         while (i + 1 < sTo.line && isCodeBlockLineObj(getLine(doc, i + 1)) === currentValue) {
           i += 1
         }

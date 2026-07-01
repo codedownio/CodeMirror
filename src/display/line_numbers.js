@@ -10,7 +10,7 @@ export function alignHorizontally(cm) {
   let display = cm.display, view = display.view
   if (!display.alignWidgets && (!display.gutters.firstChild || !cm.options.fixedGutter)) return
   let comp = compensateForHScroll(display) - display.scroller.scrollLeft + cm.doc.scrollLeft
-  let gutterW = display.gutters.offsetWidth, left = comp + "px"
+  let left = comp + "px"
   for (let i = 0; i < view.length; i++) if (!view[i].hidden) {
     if (cm.options.fixedGutter) {
       if (view[i].gutter)
@@ -24,7 +24,7 @@ export function alignHorizontally(cm) {
   }
 
   if (cm.options.fixedGutter) {
-    display.gutters.style.left = "-" + cm.display.gutters.offsetWidth + "px";
+    display.gutters.style.left = "-" + cm.display.gutters.offsetWidth + "px"
   }
 }
 

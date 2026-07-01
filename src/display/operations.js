@@ -158,13 +158,13 @@ function endOperation_finish(op) {
   // Fire final actions after hiding markers
   if (op.finalActions) {
     for (var i = 0; i < op.finalActions.length; i++) {
-      op.finalActions[i]();
+      op.finalActions[i]()
     }
   }
 
   // Refresh the CodeMirror at the end
-  if (cm.refreshAtEndOfOperation) setTimeout(function() { cm.refresh(); });
-  cm.refreshAtEndOfOperation = false;
+  if (cm.refreshAtEndOfOperation) setTimeout(function() { cm.refresh(); })
+  cm.refreshAtEndOfOperation = false
 
   // Fire change events, and delayed event handlers
   if (op.changeObjs)
@@ -178,9 +178,9 @@ export function fireHiddenHandlers(op) {
   // undoing
   let hidden = op.maybeHiddenMarkers, unhidden = op.maybeUnhiddenMarkers
   if (hidden) {
-    op.maybeHiddenMarkers = null;
+    op.maybeHiddenMarkers = null
     for (let i = 0; i < hidden.length; ++i) {
-      if (!hidden[i].marker.lines.length) signal(hidden[i].marker, "hide", hidden[i].change);
+      if (!hidden[i].marker.lines.length) signal(hidden[i].marker, "hide", hidden[i].change)
     }
   }
 
@@ -188,7 +188,7 @@ export function fireHiddenHandlers(op) {
     for (let i = 0; i < unhidden.length; ++i) {
       if (unhidden[i].lines.length) signal(unhidden[i], "unhide")
     }
-    op.maybeUnhiddenMarkers = null;
+    op.maybeUnhiddenMarkers = null
   }
 }
 

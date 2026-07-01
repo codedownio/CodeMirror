@@ -64,7 +64,6 @@
     if (this.options.stable && isAtTop(this.cm, this.node))
       this.cm.scrollTo(null, this.cm.getScrollInfo().top - this.height)
     info.wrapper.removeChild(this.node);
-    // if (--info.panels == 0) removePanels(this.cm);
   };
 
   Panel.prototype.changed = function(height) {
@@ -108,17 +107,6 @@
       cm._setSize(width, info.heightLeft += (newHeight - height));
       height = newHeight;
     };
-  }
-
-  function removePanels(cm) {
-    var info = cm.state.panels;
-    cm.state.panels = null;
-
-    var wrap = cm.getWrapperElement();
-    info.wrapper.parentNode.replaceChild(wrap, info.wrapper);
-    wrap.style.height = info.setHeight;
-    cm.setSize = cm._setSize;
-    cm.setSize();
   }
 
   function isAtTop(cm, dom) {

@@ -409,7 +409,7 @@ export default function(CodeMirror) {
     endOperation: function(){return endOperation(this)},
 
     fireHiddenHandlers: methodOp(function() {
-      fireHiddenHandlers(this.curOp);
+      fireHiddenHandlers(this.curOp)
     }),
 
     refresh: methodOp(function() {
