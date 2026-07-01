@@ -130,6 +130,9 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
         return null;
       }
 
+      // Remember whether the upcoming character starts the line, before we consume it (used for
+      // list markers, which are only markers at the start of a line).
+      var atLineStart = stream.sol();
       var ch = stream.next();
 
       // Handle braces and parentheses for tracking depth
@@ -190,7 +193,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
           stream.eatWhile(idRE);
           var word = stream.current().substring(1); // Remove the #
           if (keywords.hasOwnProperty(word)) {
-            return "keyword";
+            return keywords[word];
           }
           return "variable";
         }
@@ -234,7 +237,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
           var word = stream.current();
 
           if (keywords.hasOwnProperty(word)) {
-            return "keyword";
+            return keywords[word];
           }
 
           // Function calls
@@ -317,7 +320,7 @@ CodeMirror.defineMode("typst", function(config, modeConfig) {
 
 
         // Lists
-        if ((ch === '-' || ch === '+') && stream.sol()) {
+        if ((ch === '-' || ch === '+') && atLineStart) {
           stream.eatSpace();
           return "variable-2";
         }
